@@ -1,0 +1,81 @@
+@model Turnos31.Models.Dueno
+
+@{
+    ViewData["Title"] = "Editar Dueño";
+}
+
+<div class="container">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">Editar Dueño</h5>
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="IdDueno" />
+                
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <i class="bi bi-person position-absolute top-50 start-0 translate-middle-y ms-3"></i>
+                            <input asp-for="Nombre" class="form-control ps-5" placeholder="Nombre" />
+                            <label asp-for="Nombre" class="ps-5"></label>
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <i class="bi bi-person position-absolute top-50 start-0 translate-middle-y ms-3"></i>
+                            <input asp-for="Apellido" class="form-control ps-5" placeholder="Apellido" />
+                            <label asp-for="Apellido" class="ps-5"></label>
+                            <span asp-validation-for="Apellido" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <i class="bi bi-person-badge position-absolute top-50 start-0 translate-middle-y ms-3"></i>
+                            <input asp-for="Rut" class="form-control ps-5" placeholder="RUT" />
+                            <label asp-for="Rut" class="ps-5"></label>
+                            <span asp-validation-for="Rut" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <i class="bi bi-telephone position-absolute top-50 start-0 translate-middle-y ms-3"></i>
+                            <input asp-for="Telefono" class="form-control ps-5" placeholder="Teléfono" />
+                            <label asp-for="Telefono" class="ps-5"></label>
+                            <span asp-validation-for="Telefono" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <i class="bi bi-envelope position-absolute top-50 start-0 translate-middle-y ms-3"></i>
+                            <input asp-for="Email" type="email" class="form-control ps-5" placeholder="Email" />
+                            <label asp-for="Email" class="ps-5"></label>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <i class="bi bi-geo-alt position-absolute top-50 start-0 translate-middle-y ms-3"></i>
+                            <input asp-for="Direccion" class="form-control ps-5" placeholder="Dirección" />
+                            <label asp-for="Direccion" class="ps-5"></label>
+                            <span asp-validation-for="Direccion" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save me-2"></i>Guardar
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left me-2"></i>Volver
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

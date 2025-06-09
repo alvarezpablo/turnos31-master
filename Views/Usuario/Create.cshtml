@@ -1,0 +1,68 @@
+@model Turnos31.Models.Usuario
+
+@{
+    ViewData["Title"] = "Crear Usuario";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Crear Nuevo Usuario</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" autocomplete="off">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        
+                        <div class="mb-3">
+                            <label asp-for="Nombre" class="form-label">Nombre</label>
+                            <input asp-for="Nombre" class="form-control" placeholder="Ingrese el nombre" />
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Apellido" class="form-label">Apellido</label>
+                            <input asp-for="Apellido" class="form-control" placeholder="Ingrese el apellido" />
+                            <span asp-validation-for="Apellido" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">Correo Electrónico</label>
+                            <input asp-for="Email" class="form-control" type="email" placeholder="ejemplo@correo.com" value="" autocomplete="off" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label">Contraseña</label>
+                            <input asp-for="Password" class="form-control" type="password" placeholder="Ingrese la contraseña" value="" autocomplete="new-password" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                            <small class="form-text text-muted">La contraseña debe tener al menos 6 caracteres</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="IdRol" class="form-label">Rol de Usuario</label>
+                            <select asp-for="IdRol" class="form-select" asp-items="ViewBag.Roles">
+                                <option value="">-- Seleccione un rol --</option>
+                            </select>
+                            <span asp-validation-for="IdRol" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left me-1"></i>Volver
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save me-1"></i>Guardar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

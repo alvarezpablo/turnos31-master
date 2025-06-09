@@ -1,0 +1,77 @@
+@model Turnos31.Models.Menu
+
+@{
+    ViewData["Title"] = "Editar Menú";
+    var selectedRoles = ViewBag.SelectedRoles as List<int> ?? new List<int>();
+    var rolesList = ViewBag.Roles as SelectList ?? new SelectList(new List<SelectListItem>());
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Editar Menú</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Id" />
+                        
+                        <div class="mb-3">
+                            <label asp-for="Nombre" class="form-label"></label>
+                            <input asp-for="Nombre" class="form-control" />
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Url" class="form-label"></label>
+                            <input asp-for="Url" class="form-control" />
+                            <span asp-validation-for="Url" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Icono" class="form-label"></label>
+                            <input asp-for="Icono" class="form-control" placeholder="bi-house-fill" />
+                            <span asp-validation-for="Icono" class="text-danger"></span>
+                            <small class="form-text text-muted">Ingrese el nombre de la clase de Bootstrap Icons (ej: bi-house-fill)</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="MenuPadreId" class="form-label">Menú Padre</label>
+                            <select asp-for="MenuPadreId" class="form-select" asp-items="ViewBag.MenuPadreId">
+                                <option value="">-- Seleccione un menú padre --</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Roles</label>
+                            <select name="roles" class="form-select" multiple>
+                                @foreach (var item in rolesList)
+                                {
+                                    <option value="@item.Value" selected="@selectedRoles.Contains(int.Parse(item.Value))">
+                                        @item.Text
+                                    </option>
+                                }
+                            </select>
+                            <small class="form-text text-muted">Mantenga presionado Ctrl para seleccionar múltiples roles</small>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left me-1"></i>Volver
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save me-1"></i>Guardar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

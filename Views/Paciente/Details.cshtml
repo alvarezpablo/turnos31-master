@@ -1,0 +1,28 @@
+@model Turnos31.Models.Mascota
+
+<h4>Paciente</h4>
+<hr />
+    <div class="row">        
+        <div class="col s12 m6">
+            <div class="card hoverable green darken-1">
+                <div class="card-content white-text">
+                <span class="card-title"><h5><b>@Html.DisplayFor(model => model.Nombre), @Html.DisplayFor(model => model.Apellido)</b></h5></span>                    
+                <dt>
+                    <h6>@Html.DisplayNameFor(model => model.Direccion): @Html.DisplayFor(model => model.Direccion) </h6>
+                </dt> 
+                <hr/>                   
+                <dt >
+                    <h6>@Html.DisplayNameFor(model => model.Telefono): @Html.DisplayFor(model => model.Telefono)</h6>
+                </dt>
+                <hr/>                    
+                <dt >
+                    <h6>@Html.DisplayNameFor(model => model.Email): @Html.DisplayFor(model => model.Email)</h6>
+                </dt>                
+            </div>
+            <div class="card-action blue-grey darken-2">
+                <a asp-action="Delete" asp-route-id="@Model.IdPaciente">Eliminar</a> 
+                <a asp-action="Index">Volver</a>
+            </div>
+        </div>
+    </div>
+</div>   

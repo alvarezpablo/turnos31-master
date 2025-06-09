@@ -1,0 +1,68 @@
+@model Turnos31.Models.LoginViewModel
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white text-center">
+                    <i class="bi bi-paw fs-1"></i>
+                    <h4 class="mb-0">Clínica Veterinaria</h4>
+                    <p class="mb-0">Iniciar Sesión</p>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Index" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        
+                        <div class="form-floating mb-3">
+                            <i class="bi bi-envelope position-absolute top-50 start-0 translate-middle-y ms-3"></i>
+                            <input asp-for="Email" type="email" class="form-control ps-5" placeholder="Email" required>
+                            <label asp-for="Email" class="ps-5"></label>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <i class="bi bi-lock position-absolute top-50 start-0 translate-middle-y ms-3"></i>
+                            <input asp-for="Password" type="password" class="form-control ps-5" placeholder="Contraseña" required>
+                            <label asp-for="Password" class="ps-5"></label>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input type="checkbox" asp-for="RememberMe" class="form-check-input" id="rememberMe">
+                            <label class="form-check-label" for="rememberMe">Recordarme</label>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary btn-lg" type="submit">
+                                Ingresar
+                                <i class="bi bi-box-arrow-in-right ms-2"></i>
+                            </button>
+                        </div>
+
+                        <div class="text-center mt-3">
+                            <a href="#" class="text-primary text-decoration-none">¿Olvidaste tu contraseña?</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Bootstrap form validation
+            var forms = document.querySelectorAll('.needs-validation');
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        });
+    </script>
+}

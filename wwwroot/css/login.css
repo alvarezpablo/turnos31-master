@@ -1,0 +1,116 @@
+body {
+    background: #f5f5f5;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.login-container {
+    flex: 1 0 auto;
+    display: flex;
+    align-items: center;
+    padding: 2rem 0;
+}
+
+.login-card {
+    margin: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    animation: cardFadeIn 0.5s ease-out;
+}
+
+.login-header {
+    background: linear-gradient(45deg, #7BA69A 30%, #A8C7B5 90%);
+    padding: 2rem;
+    position: relative;
+}
+
+.login-header i.large {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.login-header h4 {
+    margin: 0.5rem 0;
+    font-weight: 300;
+}
+
+.login-header p {
+    margin: 0;
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+.card-content {
+    padding: 2rem !important;
+}
+
+.input-field {
+    margin-top: 1.5rem;
+}
+
+.input-field .prefix {
+    color: #7BA69A;
+}
+
+.input-field input:focus + label {
+    color: #7BA69A !important;
+}
+
+.input-field input:focus {
+    border-bottom: 1px solid #7BA69A !important;
+    box-shadow: 0 1px 0 0 #7BA69A !important;
+}
+
+.remember-me {
+    margin: 1rem 0;
+}
+
+[type="checkbox"].filled-in:checked + span:not(.lever):after {
+    border: 2px solid #7BA69A;
+    background-color: #7BA69A;
+}
+
+.btn-large {
+    background-color: #7BA69A;
+    width: 80%;
+    height: 54px;
+    line-height: 54px;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    border-radius: 27px;
+    margin: 1rem 0;
+}
+
+.btn-large:hover {
+    background-color: #A8C7B5;
+}
+
+@media only screen and (max-width: 600px) {
+    .login-container {
+        padding: 1rem;
+    }
+
+    .card-content {
+        padding: 1.5rem !important;
+    }
+
+    .btn-large {
+        width: 100%;
+    }
+}
+
+@keyframes cardFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.input-field input:focus + label:after {
+    transform: scaleX(1);
+} 

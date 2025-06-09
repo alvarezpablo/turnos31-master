@@ -1,0 +1,54 @@
+@model IEnumerable<Turnos31.Models.Raza>
+
+@{
+    ViewData["Title"] = "Razas";
+}
+
+ <div class="container py-4">
+    <div class="card shadow rounded-4 border-0">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="fw-bold text-primary mb-0">
+                    <i class="bi bi-people-fill me-2"></i>Dueños de Mascotas
+                </h4>
+                <a class="btn btn-success btn-lg rounded-pill px-4" asp-action="Create">
+                    <i class="bi bi-plus-circle me-2"></i>Nuevo Dueño
+                </a>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-primary text-center">   
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.Nombre)</th>
+                            <th>Especie</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Especie.Nombre)</td>
+                                <td>
+                                     <div class="btn-group" role="group">
+                                        <a class="btn btn-sm btn-outline-primary rounded-pill" asp-action="Edit" asp-route-id="@item.IdRaza" title="Editar">
+                                            <i class="bi bi-pencil-fill"></i>
+                                        </a>
+                                        <a class="btn btn-sm btn-outline-info rounded-pill" asp-action="Details" asp-route-id="@item.IdRaza" title="Ver detalles">
+                                            <i class="bi bi-eye-fill"></i>
+                                        </a>
+                                        <a class="btn btn-sm btn-outline-danger rounded-pill" asp-action="Delete" asp-route-id="@item.IdRaza" title="Eliminar">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div> 

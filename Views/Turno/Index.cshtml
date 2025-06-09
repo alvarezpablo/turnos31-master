@@ -1,0 +1,84 @@
+@model IEnumerable<Turnos31.Models.Turno>
+
+@{
+    ViewData["Title"] = "Turnos";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-calendar-check fs-4 me-2"></i>
+                        <h5 class="card-title mb-0">Turnos</h5>
+                    </div>
+                    <a asp-action="Create" class="btn btn-light">
+                        <i class="bi bi-plus-circle me-1"></i>Nuevo Turno
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Veterinario</th>
+                                    <th>Día</th>
+                                    <th>Horario</th>
+                                    <th>Duración</th>
+                                    <th>Estado</th>
+                                    <th class="text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.Veterinario?.NombreCompleto</td>
+                                        <td>@item.GetDiaSemanaEnEspanol()</td>
+                                        <td>@item.HoraInicio.ToString(@"HH\:mm") - @item.HoraFin.ToString(@"HH\:mm")</td>
+                                        <td>@item.DuracionConsulta minutos</td>
+                                        <td>
+                                            @if (item.Activo)
+                                            {
+                                                <span class="badge bg-success">Activo</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-danger">Inactivo</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <div class="d-flex justify-content-center gap-2">
+                                                <a asp-action="Edit" asp-route-id="@item.IdTurno" 
+                                                   class="btn btn-sm btn-outline-primary" title="Editar">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <a asp-action="Details" asp-route-id="@item.IdTurno" 
+                                                   class="btn btn-sm btn-outline-info" title="Detalles">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                                <a asp-action="Delete" asp-route-id="@item.IdTurno" 
+                                                   class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                                    <i class="bi bi-trash"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('select').formSelect();
+        });
+    </script>
+}

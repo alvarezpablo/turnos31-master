@@ -1,0 +1,104 @@
+@model Turnos31.Models.Turno
+
+@{
+    ViewData["Title"] = "Nuevo Turno";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">Nuevo Turno</h5>
+
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="IdVeterinario" class="control-label">Veterinario</label>
+                                    <select asp-for="IdVeterinario" asp-items="ViewBag.IdVeterinario" class="form-select">
+                                        <option value="">Seleccione un veterinario</option>
+                                    </select>
+                                    <span asp-validation-for="IdVeterinario" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="DiaSemana" class="control-label">Día de la Semana</label>
+                                    <select asp-for="DiaSemana" asp-items="ViewBag.DiasSemana" class="form-select">
+                                        <option value="">Seleccione un día</option>
+                                    </select>
+                                    <span asp-validation-for="DiaSemana" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="HoraInicio" class="control-label">Hora de Inicio</label>
+                                    <input asp-for="HoraInicio" class="form-control" type="time" />
+                                    <span asp-validation-for="HoraInicio" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="HoraFin" class="control-label">Hora de Fin</label>
+                                    <input asp-for="HoraFin" class="form-control" type="time" />
+                                    <span asp-validation-for="HoraFin" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="DuracionConsulta" class="control-label">Duración de Consulta (minutos)</label>
+                                    <input asp-for="DuracionConsulta" class="form-control" type="number" min="15" max="120" step="15" />
+                                    <span asp-validation-for="DuracionConsulta" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="form-check form-switch mt-4">
+                                        <input asp-for="Activo" class="form-check-input" type="checkbox" checked />
+                                        <label asp-for="Activo" class="form-check-label">Activo</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label asp-for="Observaciones" class="control-label">Observaciones</label>
+                                    <textarea asp-for="Observaciones" class="form-control" rows="3"></textarea>
+                                    <span asp-validation-for="Observaciones" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-save me-1"></i> Guardar
+                                    </button>
+                                    <a asp-action="Index" class="btn btn-secondary">
+                                        <i class="bi bi-arrow-left me-1"></i> Volver
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

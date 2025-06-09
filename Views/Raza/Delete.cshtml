@@ -1,0 +1,53 @@
+@model Turnos31.Models.Raza
+
+@{
+    ViewData["Title"] = "Eliminar Raza";
+}
+
+<div class="row">
+    <div class="col s12">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">¿Está seguro de eliminar esta raza?</span>
+                <div class="row">
+                    <div class="col s12">
+                        <div class="row">
+                            <div class="col s12">
+                                <h5>@Model.Nombre</h5>
+                                <p>Especie: @Model.Especie.Nombre</p>
+                            </div>
+                        </div>
+                        @if (Model.Mascotas.Any())
+                        {
+                            <div class="row">
+                                <div class="col s12">
+                                    <div class="card-panel red lighten-4">
+                                        <span class="red-text text-darken-4">
+                                            <i class="material-icons left">warning</i>
+                                            Esta raza tiene @Model.Mascotas.Count mascotas asociadas. No se puede eliminar hasta que se reasignen o eliminen las mascotas.
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <form asp-action="Delete">
+                            <input type="hidden" asp-for="IdRaza" />
+                            <div class="row">
+                                <div class="col s12">
+                                    <button type="submit" class="waves-effect waves-light btn red" @(Model.Mascotas.Any() ? "disabled" : "")>
+                                        <i class="material-icons left">delete</i>
+                                        Eliminar
+                                    </button>
+                                    <a class="waves-effect waves-light btn grey" asp-action="Index">
+                                        <i class="material-icons left">arrow_back</i>
+                                        Volver
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

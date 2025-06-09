@@ -1,0 +1,53 @@
+@model IEnumerable<Turnos31.Models.Especie>
+
+@{
+    ViewData["Title"] = "Especies";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="card-title mb-0">Especies</h5>
+                    <a class="btn btn-primary" asp-action="Create">
+                        <i class="bi bi-plus-circle me-1"></i>Nueva Especie
+                    </a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>@Html.DisplayNameFor(model => model.Nombre)</th>
+                                <th>Cantidad de Razas</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                                    <td>@item.Razas.Count</td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a class="btn btn-sm btn-outline-primary rounded-pill" asp-action="Edit" asp-route-id="@item.IdEspecie" title="Editar">
+                                                <i class="bi bi-pencil-fill"></i>
+                                            </a>
+                                            <a class="btn btn-sm btn-outline-info rounded-pill" asp-action="Details" asp-route-id="@item.IdEspecie" title="Ver detalles">
+                                                <i class="bi bi-eye-fill"></i>
+                                            </a>
+                                            <a class="btn btn-sm btn-outline-danger rounded-pill" asp-action="Delete" asp-route-id="@item.IdEspecie" title="Eliminar">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

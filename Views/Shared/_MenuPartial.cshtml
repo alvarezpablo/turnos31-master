@@ -1,0 +1,165 @@
+@{
+    var usuarioRol = Context.Session.GetString("UsuarioRol");
+    var usuarioId = Context.Session.GetString("UsuarioId");
+    var usuarioNombre = Context.Session.GetString("UsuarioNombre");
+}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="/">
+            <i class="bi bi-hospital me-2"></i>
+            Veterinaria
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto" id="dynamicMenu">
+                @if (!string.IsNullOrEmpty(usuarioRol))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Home/Index">
+                            <i class="bi bi-house-door"></i> Inicio
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Login/Index">
+                            <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
+                        </a>
+                    </li>
+                }
+            </ul>
+            @if (!string.IsNullOrEmpty(usuarioId))
+            {
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> @usuarioNombre
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="/Login/Logout">
+                                    <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            }
+        </div>
+    </div>
+</nav>
+
+<script>
+    // Esperar a que jQuery esté disponible
+    function waitForJQuery(callback) {
+        if (window.jQuery) {
+            callback();
+        } else {
+            setTimeout(function() {
+                waitForJQuery(callback);
+            }, 100);
+        }
+    }
+
+    waitForJQuery(function() {
+        // Remover cualquier intento de llamar a formSelect
+        if (typeof $.fn.formSelect === 'undefined') {
+            $.fn.formSelect = function() {
+                console.warn('formSelect no está disponible');
+                return this;
+            };
+        }
+
+        // Cargar el menú cuando la página esté lista
+        $(document).ready(function() {
+            console.log('Script iniciado');
+            var usuarioRol = '@usuarioRol';
+            
+            if (usuarioRol) {
+                console.log('Cargando menú para rol:', usuarioRol);
+                
+                $.ajax({
+                    url: '/Menu/GetMenu',
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log('Datos recibidos:', data);
+                        
+                        if (data.success) {
+                            var menuContainer = $('#dynamicMenu');
+                            
+                            // Limpiar el menú actual excepto el botón de inicio
+                            var inicioItem = menuContainer.find('.nav-item').first();
+                            menuContainer.empty();
+                            if (inicioItem.length) {
+                                menuContainer.append(inicioItem);
+                            }
+
+                            // Agregar los demás menús dinámicamente
+                            if (data.menus && data.menus.length > 0) {
+                                data.menus.forEach(function(menu) {
+                                    if (menu.submenus && menu.submenus.length > 0) {
+                                        // Menú con submenús
+                                        var menuHtml = `
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                                    <i class="bi ${menu.icono}"></i> ${menu.nombre}
+                                                </a>
+                                                <ul class="dropdown-menu">
+                                                    ${menu.submenus.map(function(submenu) {
+                                                        return `
+                                                            <li>
+                                                                <a class="dropdown-item" href="${submenu.url}">
+                                                                    <i class="bi ${submenu.icono}"></i> ${submenu.nombre}
+                                                                </a>
+                                                            </li>
+                                                        `;
+                                                    }).join('')}
+                                                </ul>
+                                            </li>
+                                        `;
+                                        menuContainer.append(menuHtml);
+                                    } else if (menu.nombre !== 'Inicio') {
+                                        // Menú simple (excluyendo Inicio que ya agregamos)
+                                        var menuHtml = `
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="${menu.url}">
+                                                    <i class="bi ${menu.icono}"></i> ${menu.nombre}
+                                                </a>
+                                            </li>
+                                        `;
+                                        menuContainer.append(menuHtml);
+                                    }
+                                });
+                            } else {
+                                console.warn('No se encontraron menús para el rol');
+                            }
+
+                            // Mostrar información de depuración
+                            if (data.debug) {
+                                console.log('Información de depuración:', data.debug);
+                            }
+                        } else {
+                            console.error('Error al cargar el menú:', data.message);
+                            alert('Error al cargar el menú: ' + data.message);
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error('Error en la petición AJAX:', {
+                            status: jqXHR.status,
+                            statusText: jqXHR.statusText,
+                            responseText: jqXHR.responseText,
+                            textStatus: textStatus,
+                            errorThrown: errorThrown
+                        });
+                        alert('Error al cargar el menú. Por favor, revise la consola para más detalles.');
+                    }
+                });
+            }
+        });
+    });
+</script> 

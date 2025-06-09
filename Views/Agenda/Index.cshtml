@@ -1,0 +1,158 @@
+@model IEnumerable<Turnos31.Models.Agenda>
+
+@{
+    ViewData["Title"] = "Agenda de Visitas";
+}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form method="get" class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label">Veterinario</label>
+                        <select name="idVeterinario" asp-items="ViewBag.IdVeterinario" class="form-select">
+                            <option value="">Todos</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Mascota</label>
+                        <select name="idMascota" asp-items="ViewBag.IdMascota" class="form-select">
+                            <option value="">Todas</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Estado</label>
+                        <select name="estado" asp-items="ViewBag.Estado" class="form-select">
+                            <option value="">Todos</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Desde</label>
+                        <input type="date" name="desde" value="@ViewBag.Desde" class="form-control" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Hasta</label>
+                        <input type="date" name="hasta" value="@ViewBag.Hasta" class="form-control" />
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-search me-1"></i>Filtrar
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="bi bi-x-circle me-1"></i>Limpiar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="list-tab" data-bs-toggle="tab" data-bs-target="#list" type="button" role="tab">
+                            <i class="bi bi-list-ul me-1"></i>Lista
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="calendar-tab" data-bs-toggle="tab" data-bs-target="#calendar" type="button" role="tab">
+                            <i class="bi bi-calendar3 me-1"></i>Calendario
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content mt-3" id="myTabContent">
+                    <div class="tab-pane fade show active" id="list" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="card-title mb-0">Agenda de Visitas</h5>
+                            <a class="btn btn-primary" asp-action="Create">
+                                <i class="bi bi-plus-circle me-1"></i> Nueva Cita
+                            </a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Mascota</th>
+                                        <th>Veterinario</th>
+                                        <th>Fecha y Hora</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.Mascota?.Nombre</td>
+                                            <td>@item.Veterinario?.Nombre @item.Veterinario?.Apellido</td>
+                                            <td>@item.FechaHoraInicio.ToString("g") - @item.FechaHoraFin.ToString("t")</td>
+                                            <td>@item.Estado</td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <a class="btn btn-sm btn-outline-primary rounded-pill" asp-action="Edit" asp-route-id="@item.IdAgenda" title="Editar">
+                                                        <i class="bi bi-pencil-fill"></i>
+                                                    </a>
+                                                    <a class="btn btn-sm btn-outline-info rounded-pill" asp-action="Details" asp-route-id="@item.IdAgenda" title="Ver detalles">
+                                                        <i class="bi bi-eye-fill"></i>
+                                                    </a>
+                                                    <a class="btn btn-sm btn-outline-danger rounded-pill" asp-action="Delete" asp-route-id="@item.IdAgenda" title="Eliminar">
+                                                        <i class="bi bi-trash-fill"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="calendar" role="tabpanel">
+                        <div id="calendar"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'timeGridWeek',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                locale: 'es',
+                slotMinTime: '08:00:00',
+                slotMaxTime: '20:00:00',
+                allDaySlot: false,
+                events: @Html.Raw(Json.Serialize(Model.Select(a => new {
+                    id = a.IdAgenda,
+                    title = $"{a.Mascota?.Nombre} - {a.Veterinario?.Nombre} {a.Veterinario?.Apellido}",
+                    start = a.FechaHoraInicio,
+                    end = a.FechaHoraFin,
+                    className = a.EsUrgente ? "urgente" : "normal",
+                    extendedProps = new {
+                        mascota = a.Mascota?.Nombre,
+                        veterinario = $"{a.Veterinario?.Nombre} {a.Veterinario?.Apellido}",
+                        motivo = a.MotivoVisita,
+                        estado = a.Estado.ToString()
+                    }
+                }))),
+                eventClick: function(info) {
+                    window.location.href = '@Url.Action("Details")/' + info.event.id;
+                }
+            });
+            calendar.render();
+        });
+    </script>
+} 

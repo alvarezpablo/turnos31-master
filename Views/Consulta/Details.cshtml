@@ -1,0 +1,191 @@
+@model Turnos31.Models.Consulta
+
+@{
+    ViewData["Title"] = "Detalles de la Consulta";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="card-title mb-0">Detalles de la Consulta</h5>
+                        <div>
+                            <a asp-action="Edit" asp-route-id="@Model.IdConsulta" class="btn btn-primary">
+                                <i class="bi bi-pencil me-1"></i> Editar
+                            </a>
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left me-1"></i> Volver
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-muted mb-3">Información del Turno</h6>
+                            <dl class="row">
+                                <dt class="col-sm-4">Fecha y Hora</dt>
+                                <dd class="col-sm-8">@Model.FechaHora.ToString("g")</dd>
+
+                                <dt class="col-sm-4">Veterinario</dt>
+                                <dd class="col-sm-8">@($"{Model.Agenda?.Veterinario?.Nombre} {Model.Agenda?.Veterinario?.Apellido}")</dd>
+
+                                <dt class="col-sm-4">Mascota</dt>
+                                <dd class="col-sm-8">@Model.Agenda?.Mascota?.Nombre</dd>
+
+                                <dt class="col-sm-4">Dueño</dt>
+                                <dd class="col-sm-8">@($"{Model.Agenda?.Mascota?.Dueno?.Nombre} {Model.Agenda?.Mascota?.Dueno?.Apellido}")</dd>
+                            </dl>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h6 class="text-muted mb-3">Signos Vitales</h6>
+                            <dl class="row">
+                                <dt class="col-sm-4">Peso</dt>
+                                <dd class="col-sm-8">@Model.Peso?.ToString("N1") kg</dd>
+
+                                <dt class="col-sm-4">Temperatura</dt>
+                                <dd class="col-sm-8">@Model.Temperatura?.ToString("N1") °C</dd>
+
+                                <dt class="col-sm-4">Frecuencia Cardíaca</dt>
+                                <dd class="col-sm-8">@Model.FrecuenciaCardiaca?.ToString("N0") lpm</dd>
+
+                                <dt class="col-sm-4">Frecuencia Respiratoria</dt>
+                                <dd class="col-sm-8">@Model.FrecuenciaRespiratoria?.ToString("N0") rpm</dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <h6 class="text-muted mb-3">Información de la Consulta</h6>
+                            <dl class="row">
+                                <dt class="col-sm-2">Motivo</dt>
+                                <dd class="col-sm-10">@Model.Motivo</dd>
+
+                                <dt class="col-sm-2">Diagnóstico</dt>
+                                <dd class="col-sm-10">@Model.Diagnostico</dd>
+
+                                <dt class="col-sm-2">Tratamiento</dt>
+                                <dd class="col-sm-10">@Model.Tratamiento</dd>
+
+                                @if (!string.IsNullOrEmpty(Model.Observaciones))
+                                {
+                                    <dt class="col-sm-2">Observaciones</dt>
+                                    <dd class="col-sm-10">@Model.Observaciones</dd>
+                                }
+                            </dl>
+                        </div>
+                    </div>
+
+                    @if (Model.Diagnosticos.Any())
+                    {
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <h6 class="text-muted mb-3">Diagnósticos</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Diagnóstico</th>
+                                                <th>Fecha</th>
+                                                <th>Estado</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var diagnostico in Model.Diagnosticos)
+                                            {
+                                                <tr>
+                                                    <td>@diagnostico.Detalle</td>
+                                                    <td>@diagnostico.FechaDiagnostico?.ToString("d")</td>
+                                                    <td>@(diagnostico.Status == 1 ? "Activo" : "Inactivo")</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    @if (Model.Tratamientos.Any())
+                    {
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <h6 class="text-muted mb-3">Tratamientos</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Producto</th>
+                                                <th>Detalle</th>
+                                                <th>Estado</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var tratamiento in Model.Tratamientos)
+                                            {
+                                                <tr>
+                                                    <td>@tratamiento.ProductosTratamientos.FirstOrDefault()?.Producto?.Nombre</td>
+                                                    <td>@tratamiento.Detalle</td>
+                                                    <td>@(tratamiento.Status == 1 ? "Activo" : "Inactivo")</td>
+                                                    <td>
+                                                        <a href="#" class="btn btn-sm btn-primary">
+                                                            <i class="bi bi-pencil"></i>
+                                                        </a>
+                                                        <a href="#" class="btn btn-sm btn-danger">
+                                                            <i class="bi bi-trash"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    @if (Model.Examenes.Any())
+                    {
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <h6 class="text-muted mb-3">Exámenes</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Resultado</th>
+                                                <th>Fecha</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var examen in Model.Examenes)
+                                            {
+                                                <tr>
+                                                    <td>@examen.Resultados.FirstOrDefault()?.Resultado</td>
+                                                    <td>@examen.Resultados.FirstOrDefault()?.FechaRealizacion.ToString("d")</td>
+                                                    <td>
+                                                        <a href="#" class="btn btn-sm btn-primary">
+                                                            <i class="bi bi-pencil"></i>
+                                                        </a>
+                                                        <a href="#" class="btn btn-sm btn-danger">
+                                                            <i class="bi bi-trash"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

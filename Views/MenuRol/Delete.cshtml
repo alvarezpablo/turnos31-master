@@ -1,0 +1,43 @@
+@model Turnos31.Models.MenuRol
+
+@{
+    ViewData["Title"] = "Eliminar Asignación";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">Eliminar Asignación</h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        ¿Está seguro que desea eliminar esta asignación? Esta acción no se puede deshacer.
+                    </div>
+
+                    <dl class="row">
+                        <dt class="col-sm-3">Menú</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Menu.Nombre)</dd>
+
+                        <dt class="col-sm-3">Rol</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Rol.NombreRol)</dd>
+                    </dl>
+
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="Id" />
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left me-1"></i>Volver
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash me-1"></i>Eliminar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

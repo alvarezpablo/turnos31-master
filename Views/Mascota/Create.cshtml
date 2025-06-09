@@ -1,0 +1,119 @@
+@model Turnos31.ViewModels.MascotaCreateViewModel
+
+@{
+    ViewData["Title"] = "Nueva Mascota";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-paw fs-4 me-2"></i>
+                        <h5 class="card-title mb-0">Nueva Mascota</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Mascota.Nombre" class="control-label">
+                                        <i class="bi bi-paw me-1"></i>Nombre
+                                    </label>
+                                    <input asp-for="Mascota.Nombre" class="form-control" />
+                                    <span asp-validation-for="Mascota.Nombre" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Mascota.IdDueno" class="control-label">
+                                        <i class="bi bi-person me-1"></i>Dueño
+                                    </label>
+                                    <select asp-for="Mascota.IdDueno" class="form-select" asp-items="ViewBag.IdDueno">
+                                        <option value="">Seleccione un dueño</option>
+                                    </select>
+                                    <span asp-validation-for="Mascota.IdDueno" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Mascota.IdEspecie" class="control-label">
+                                        <i class="bi bi-tag me-1"></i>Especie
+                                    </label>
+                                    <select asp-for="Mascota.IdEspecie" class="form-select" asp-items="ViewBag.IdEspecie">
+                                        <option value="">Seleccione una especie</option>
+                                    </select>
+                                    <span asp-validation-for="Mascota.IdEspecie" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Mascota.IdRaza" class="control-label">
+                                        <i class="bi bi-tag-fill me-1"></i>Raza
+                                    </label>
+                                    <select asp-for="Mascota.IdRaza" class="form-select" asp-items="ViewBag.IdRaza">
+                                        <option value="">Seleccione una raza</option>
+                                    </select>
+                                    <span asp-validation-for="Mascota.IdRaza" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Mascota.Sexo" class="control-label">
+                                        <i class="bi bi-gender-ambiguous me-1"></i>Sexo
+                                    </label>
+                                    <select asp-for="Mascota.Sexo" class="form-select">
+                                        <option value="">Seleccione el sexo</option>
+                                        <option value="M">Macho</option>
+                                        <option value="H">Hembra</option>
+                                    </select>
+                                    <span asp-validation-for="Mascota.Sexo" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Mascota.Edad" class="control-label">
+                                        <i class="bi bi-calendar me-1"></i>Edad
+                                    </label>
+                                    <input asp-for="Mascota.Edad" class="form-control" type="number" min="0" />
+                                    <span asp-validation-for="Mascota.Edad" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Mascota.Observaciones" class="control-label">
+                                <i class="bi bi-info-circle me-1"></i>Observaciones
+                            </label>
+                            <textarea asp-for="Mascota.Observaciones" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Mascota.Observaciones" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left me-2"></i>Volver
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save me-2"></i>Guardar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

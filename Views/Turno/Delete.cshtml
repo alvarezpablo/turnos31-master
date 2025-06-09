@@ -1,0 +1,113 @@
+@model Turnos31.Models.Turno
+
+@{
+    ViewData["Title"] = "Eliminar Turno";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-danger text-white">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-exclamation-triangle fs-4 me-2"></i>
+                        <h5 class="card-title mb-0">Eliminar Turno</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning mb-4">
+                        <div class="d-flex">
+                            <i class="bi bi-exclamation-triangle-fill fs-4 me-2"></i>
+                            <div>
+                                <h6 class="alert-heading mb-1">¿Está seguro que desea eliminar este turno?</h6>
+                                <p class="mb-0">Esta acción no se puede deshacer y eliminará todos los registros asociados.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h4 class="text-primary mb-3">
+                                @Model.Veterinario?.NombreCompleto
+                            </h4>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="bi bi-calendar text-primary fs-5 me-2"></i>
+                                <div>
+                                    <small class="text-muted d-block">Día de la Semana</small>
+                                    <span>@Model.GetDiaSemanaEnEspanol()</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="bi bi-clock text-primary fs-5 me-2"></i>
+                                <div>
+                                    <small class="text-muted d-block">Horario</small>
+                                    <span>@Model.HoraInicio.ToString(@"HH\:mm") - @Model.HoraFin.ToString(@"HH\:mm")</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="bi bi-hourglass-split text-primary fs-5 me-2"></i>
+                                <div>
+                                    <small class="text-muted d-block">Duración de Consulta</small>
+                                    <span>@Model.DuracionConsulta minutos</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="bi bi-toggle-on text-primary fs-5 me-2"></i>
+                                <div>
+                                    <small class="text-muted d-block">Estado</small>
+                                    @if (Model.Activo)
+                                    {
+                                        <span class="badge bg-success">Activo</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Inactivo</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(Model.Observaciones))
+                        {
+                            <div class="col-12">
+                                <div class="d-flex align-items-start mb-3">
+                                    <i class="bi bi-chat-text text-primary fs-5 me-2"></i>
+                                    <div>
+                                        <small class="text-muted d-block">Observaciones</small>
+                                        <span>@Model.Observaciones</span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <form asp-action="Delete" class="mt-4">
+                        <input type="hidden" asp-for="IdTurno" />
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left me-1"></i>Volver
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash me-1"></i>Eliminar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

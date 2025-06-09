@@ -1,0 +1,29 @@
+@model Turnos31.Models.Paciente
+
+<h2>Crear Paciente</h2>
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="red-text"></div>
+    
+    <div class="input-field">
+        <label asp-for="Nombre"></label>
+        <input asp-for="Nombre" class="validate" required />
+        <span asp-validation-for="Nombre" class="red-text"></span>
+    </div>
+
+    <div class="input-field">
+        <label asp-for="Edad"></label>
+        <input asp-for="Edad" type="number" class="validate" required />
+        <span asp-validation-for="Edad" class="red-text"></span>
+    </div>
+
+    <button type="submit" class="btn waves-effect waves-light">Guardar</button>
+</form>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('select').formSelect();
+        });
+    </script>
+}

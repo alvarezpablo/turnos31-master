@@ -1,0 +1,40 @@
+@model Turnos31.Models.Agenda
+
+@{
+    ViewData["Title"] = "Eliminar Cita";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title mb-4">Eliminar Cita</h5>
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    ¿Está seguro que desea eliminar esta cita?
+                </div>
+                <dl class="row">
+                    <dt class="col-sm-3">Mascota</dt>
+                    <dd class="col-sm-9">@Model.Mascota?.Nombre</dd>
+                    <dt class="col-sm-3">Veterinario</dt>
+                    <dd class="col-sm-9">@Model.Veterinario?.Nombre @Model.Veterinario?.Apellido</dd>
+                    <dt class="col-sm-3">Fecha y Hora de Inicio</dt>
+                    <dd class="col-sm-9">@Model.FechaHoraInicio.ToString("g")</dd>
+                    <dt class="col-sm-3">Fecha y Hora de Fin</dt>
+                    <dd class="col-sm-9">@Model.FechaHoraFin.ToString("g")</dd>
+                </dl>
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="IdAgenda" />
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash-fill me-1"></i>Eliminar
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left me-1"></i>Volver
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> 

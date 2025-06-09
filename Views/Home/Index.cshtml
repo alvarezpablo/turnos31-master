@@ -1,0 +1,159 @@
+@model IEnumerable<Turnos31.Models.Mascota>
+
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+<div class="container">
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="bi bi-paw fs-1 text-primary mb-3"></i>
+                    <h3 class="card-title">Mascotas</h3>
+                    <p class="card-text">Administra el registro de mascotas y sus dueños</p>
+                    <a href="/Mascota/Create" class="btn btn-primary">Gestionar Mascotas</a>
+                </div>
+            </div>
+        </div>
+
+         
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="row g-4">
+                        <div class="col-md-4 text-center">
+                            <div class="display-4 text-primary">150+</div>
+                            <div class="text-muted">Pacientes Atendidos</div>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="display-4 text-primary">10+</div>
+                            <div class="text-muted">Médicos Especialistas</div>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="display-4 text-primary">24/7</div>
+                            <div class="text-muted">Atención Disponible</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   @*  <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Mascotas</h5>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <form asp-action="Index" method="get" class="row g-3">
+                                <div class="col-md-8">
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                        <select name="idDueno" asp-items="ViewBag.IdDueno" class="form-select">
+                                            <option value="">Todos los dueños</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-primary w-100" type="submit">
+                                        <i class="bi bi-search me-2"></i>Buscar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <a class="btn btn-success" asp-controller="Mascota" asp-action="Create">
+                                <i class="bi bi-plus-circle me-2"></i>Nueva Mascota
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Especie</th>
+                                    <th>Raza</th>
+                                    <th>Dueño</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.Nombre</td>
+                                        <td>@item.Especie?.Nombre</td>
+                                        <td>@item.Raza?.Nombre</td>
+                                        <td>@item.Dueno?.Nombre @item.Dueno?.Apellido</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a class="btn btn-sm btn-outline-primary" asp-controller="Mascota" asp-action="Edit" asp-route-id="@item.IdMascota">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <a class="btn btn-sm btn-outline-info" asp-controller="Mascota" asp-action="Details" asp-route-id="@item.IdMascota">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                                <a class="btn btn-sm btn-outline-danger" asp-controller="Mascota" asp-action="Delete" asp-route-id="@item.IdMascota">
+                                                    <i class="bi bi-trash"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> *@
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('select').formSelect();
+        });
+    </script>
+}
+
+<style>
+    .card .card-image {
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+    .card:hover .card-image {
+        transform: scale(1.05);
+    }
+    .card .material-icons.large {
+        font-size: 6rem;
+        line-height: 6rem;
+    }
+    .divider {
+        margin: 20px 0;
+        background-color: #A8C7B5;
+    }
+    .card-action {
+        padding-top: 16px;
+    }
+    .btn-small {
+        margin: 5px;
+    }
+    .section {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+    .card {
+        border-radius: 8px;
+    }
+    .card .card-image {
+        border-radius: 8px 8px 0 0;
+    }
+</style> 

@@ -1,0 +1,76 @@
+@model IEnumerable<Turnos31.Models.Usuario>
+
+@{
+    ViewData["Title"] = "Gestión de Usuarios";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Gestión de Usuarios</h5>
+                    <a asp-action="Create" class="btn btn-light">
+                        <i class="bi bi-person-plus me-1"></i>Nuevo Usuario
+                    </a>
+                </div>
+                <div class="card-body">
+                    @if (TempData["Mensaje"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="bi bi-check-circle me-2"></i>@TempData["Mensaje"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Nombre Completo</th>
+                                    <th>Correo Electrónico</th>
+                                    <th>Rol</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.Nombre @item.Apellido</td>
+                                        <td>@item.Email</td>
+                                        <td>@item.Rol?.NombreRol</td>
+                                        <td>
+                                            @if (item.Activo)
+                                            {
+                                                <span class="badge bg-success">Activo</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-danger">Inactivo</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <a asp-action="Edit" asp-route-id="@item.IdUsuario" class="btn btn-sm btn-outline-primary rounded-pill" title="Editar">
+                                                    <i class="bi bi-pencil-fill"></i>
+                                                </a>
+                                                <a asp-action="Details" asp-route-id="@item.IdUsuario" class="btn btn-sm btn-outline-info rounded-pill" title="Ver detalles">
+                                                    <i class="bi bi-eye-fill"></i>
+                                                </a>
+                                                <a asp-action="Delete" asp-route-id="@item.IdUsuario" class="btn btn-sm btn-outline-danger rounded-pill" title="Eliminar">
+                                                    <i class="bi bi-trash-fill"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

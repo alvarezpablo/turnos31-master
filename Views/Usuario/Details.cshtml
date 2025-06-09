@@ -1,0 +1,50 @@
+@model Turnos31.Models.Usuario
+
+@{
+    ViewData["Title"] = "Detalles del Usuario";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Detalles del Usuario</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Nombre Completo</dt>
+                        <dd class="col-sm-8">@Model.Nombre @Model.Apellido</dd>
+
+                        <dt class="col-sm-4">Correo Electrónico</dt>
+                        <dd class="col-sm-8">@Model.Email</dd>
+
+                        <dt class="col-sm-4">Rol de Usuario</dt>
+                        <dd class="col-sm-8">@Model.Rol?.NombreRol</dd>
+
+                        <dt class="col-sm-4">Estado</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.Activo)
+                            {
+                                <span class="badge bg-success">Activo</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Inactivo</span>
+                            }
+                        </dd>
+                    </dl>
+
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left me-1"></i>Volver
+                        </a>
+                        <a asp-action="Edit" asp-route-id="@Model.IdUsuario" class="btn btn-primary">
+                            <i class="bi bi-pencil me-1"></i>Editar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

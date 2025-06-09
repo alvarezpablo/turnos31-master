@@ -1,0 +1,58 @@
+@model Turnos31.Models.Usuario
+
+@{
+    ViewData["Title"] = "Eliminar Usuario";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">Eliminar Usuario</h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        ¿Está seguro que desea eliminar este usuario? Esta acción no se puede deshacer.
+                    </div>
+
+                    <dl class="row">
+                        <dt class="col-sm-4">Nombre Completo</dt>
+                        <dd class="col-sm-8">@Model.Nombre @Model.Apellido</dd>
+
+                        <dt class="col-sm-4">Correo Electrónico</dt>
+                        <dd class="col-sm-8">@Model.Email</dd>
+
+                        <dt class="col-sm-4">Rol de Usuario</dt>
+                        <dd class="col-sm-8">@Model.Rol?.NombreRol</dd>
+
+                        <dt class="col-sm-4">Estado</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.Activo)
+                            {
+                                <span class="badge bg-success">Activo</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Inactivo</span>
+                            }
+                        </dd>
+                    </dl>
+
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="IdUsuario" />
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left me-1"></i>Volver
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash me-1"></i>Eliminar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

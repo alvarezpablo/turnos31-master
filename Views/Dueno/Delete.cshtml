@@ -1,0 +1,42 @@
+@model Turnos31.Models.Dueno
+
+@{
+    ViewData["Title"] = "Eliminar Dueño";
+}
+
+<div class="container">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">¿Está seguro de eliminar este dueño?</h5>
+            
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h5>@Model.Nombre @Model.Apellido</h5>
+                    <p><i class="bi bi-person-badge me-2"></i><strong>RUT:</strong> @Model.Rut</p>
+                    <p><i class="bi bi-telephone me-2"></i><strong>Teléfono:</strong> @Model.Telefono</p>
+                    <p><i class="bi bi-envelope me-2"></i><strong>Email:</strong> @Model.Email</p>
+                </div>
+            </div>
+
+            @if (Model.Mascotas.Any())
+            {
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    Este dueño tiene @Model.Mascotas.Count mascotas registradas. No se puede eliminar hasta que se reasignen o eliminen las mascotas.
+                </div>
+            }
+
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="IdDueno" />
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash me-2"></i>Eliminar
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left me-2"></i>Volver
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> 

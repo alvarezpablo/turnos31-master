@@ -1,0 +1,55 @@
+@model Turnos31.Models.Especie
+
+@{
+    ViewData["Title"] = "Detalles de Especie";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title mb-4">Detalles de Especie</h5>
+                
+                <dl class="row">
+                    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Nombre)</dt>
+                    <dd class="col-sm-10">@Html.DisplayFor(model => model.Nombre)</dd>
+                </dl>
+
+                <h6 class="mt-4 mb-3">Razas</h6>
+                @if (Model.Razas != null && Model.Razas.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Nombre</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var raza in Model.Razas)
+                                {
+                                    <tr>
+                                        <td>@raza.Nombre</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted">No hay razas registradas para esta especie.</p>
+                }
+
+                <div class="mt-4">
+                    <a asp-action="Edit" asp-route-id="@Model.IdEspecie" class="btn btn-primary">
+                        <i class="bi bi-pencil-fill me-1"></i>Editar
+                    </a>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left me-1"></i>Volver
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

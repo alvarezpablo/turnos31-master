@@ -1,0 +1,97 @@
+@model Turnos31.Models.Veterinario
+
+@{
+    ViewData["Title"] = "Eliminar Médico";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-danger text-white">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-exclamation-triangle fs-4 me-2"></i>
+                        <h5 class="card-title mb-0">Eliminar Médico</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning mb-4">
+                        <div class="d-flex">
+                            <i class="bi bi-exclamation-triangle-fill fs-4 me-2"></i>
+                            <div>
+                                <h6 class="alert-heading mb-1">¿Está seguro que desea eliminar este médico?</h6>
+                                <p class="mb-0">Esta acción no se puede deshacer y eliminará todos los registros asociados.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h4 class="text-primary mb-3">
+                                @Html.DisplayFor(model => model.Nombre) @Html.DisplayFor(model => model.Apellido)
+                            </h4>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="bi bi-geo-alt text-primary fs-5 me-2"></i>
+                                <div>
+                                    <small class="text-muted d-block">Dirección</small>
+                                    <span>@Html.DisplayFor(model => model.Direccion)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="bi bi-telephone text-primary fs-5 me-2"></i>
+                                <div>
+                                    <small class="text-muted d-block">Teléfono</small>
+                                    <span>@Html.DisplayFor(model => model.Telefono)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="bi bi-envelope text-primary fs-5 me-2"></i>
+                                <div>
+                                    <small class="text-muted d-block">Email</small>
+                                    <span>@Html.DisplayFor(model => model.Email)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="bi bi-clock text-primary fs-5 me-2"></i>
+                                <div>
+                                    <small class="text-muted d-block">Horario de Atención</small>
+                                    <span>
+                                        @Model.HorarioAtencionDesde.ToString("HH:mm") - @Model.HorarioAtencionHasta.ToString("HH:mm")
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form asp-action="Delete" class="mt-4">
+                        <input type="hidden" asp-for="IdVeterinario" />
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left me-1"></i>Volver
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash me-1"></i>Eliminar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+ 

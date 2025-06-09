@@ -1,0 +1,45 @@
+@model Turnos31.Models.Especie
+
+@{
+    ViewData["Title"] = "Eliminar Especie";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title mb-4">Eliminar Especie</h5>
+                
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    ¿Está seguro que desea eliminar esta especie?
+                </div>
+
+                <dl class="row">
+                    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Nombre)</dt>
+                    <dd class="col-sm-10">@Html.DisplayFor(model => model.Nombre)</dd>
+                </dl>
+
+                @if (Model.Razas != null && Model.Razas.Any())
+                {
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-circle-fill me-2"></i>
+                        Esta especie tiene @Model.Razas.Count raza(s) asociada(s). Al eliminarla, también se eliminarán todas las razas asociadas.
+                    </div>
+                }
+
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="IdEspecie" />
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash-fill me-1"></i>Eliminar
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left me-1"></i>Volver
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> 

@@ -1,0 +1,124 @@
+@model Turnos31.Models.Mascota
+
+@{
+    ViewData["Title"] = "Editar Mascota";
+}
+
+<div class="row">
+    <div class="col s12">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">Editar Mascota</span>
+                <form asp-action="Edit">
+                    <div class="row">
+                        <div asp-validation-summary="ModelOnly" class="red-text"></div>
+                        <input type="hidden" asp-for="IdMascota" />
+
+                        <div class="input-field col s12 m6">
+                            <i class="material-icons prefix">pets</i>
+                            <input asp-for="Nombre" class="validate" />
+                            <label asp-for="Nombre">Nombre</label>
+                            <span asp-validation-for="Nombre" class="red-text"></span>
+                        </div>
+
+                        <div class="input-field col s12 m6">
+                            <i class="material-icons prefix">calendar_today</i>
+                            <input asp-for="FechaNacimiento" type="date" class="validate" />
+                            <label asp-for="FechaNacimiento">Fecha de Nacimiento</label>
+                            <span asp-validation-for="FechaNacimiento" class="red-text"></span>
+                        </div>
+
+                        <div class="input-field col s12 m6">
+                            <i class="material-icons prefix">category</i>
+                            <select asp-for="IdEspecie" asp-items="ViewBag.IdEspecie" class="validate">
+                                <option value="" disabled>Seleccione una especie</option>
+                            </select>
+                            <label>Especie</label>
+                            <span asp-validation-for="IdEspecie" class="red-text"></span>
+                        </div>
+
+                        <div class="input-field col s12 m6">
+                            <i class="material-icons prefix">pets</i>
+                            <select asp-for="IdRaza" asp-items="ViewBag.IdRaza" class="validate">
+                                <option value="" disabled>Seleccione una raza</option>
+                            </select>
+                            <label>Raza</label>
+                            <span asp-validation-for="IdRaza" class="red-text"></span>
+                        </div>
+
+                        <div class="input-field col s12 m6">
+                            <i class="material-icons prefix">person</i>
+                            <select asp-for="IdDueno" asp-items="ViewBag.IdDueno" class="validate">
+                                <option value="" disabled>Seleccione un dueño</option>
+                            </select>
+                            <label>Dueño</label>
+                            <span asp-validation-for="IdDueno" class="red-text"></span>
+                        </div>
+
+                        <div class="input-field col s12 m6">
+                            <i class="material-icons prefix">wc</i>
+                            <select asp-for="Sexo" class="validate">
+                                <option value="" disabled>Seleccione el sexo</option>
+                                <option value="M">Macho</option>
+                                <option value="H">Hembra</option>
+                            </select>
+                            <label>Sexo</label>
+                            <span asp-validation-for="Sexo" class="red-text"></span>
+                        </div>
+
+                        <div class="input-field col s12 m6">
+                            <i class="material-icons prefix">palette</i>
+                            <input asp-for="Color" class="validate" />
+                            <label asp-for="Color">Color</label>
+                            <span asp-validation-for="Color" class="red-text"></span>
+                        </div>
+
+                        <div class="input-field col s12 m6">
+                            <i class="material-icons prefix">texture</i>
+                            <input asp-for="Pelaje" class="validate" />
+                            <label asp-for="Pelaje">Pelaje</label>
+                            <span asp-validation-for="Pelaje" class="red-text"></span>
+                        </div>
+
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">warning</i>
+                            <textarea asp-for="Alergia" class="materialize-textarea"></textarea>
+                            <label asp-for="Alergia">Alergias</label>
+                            <span asp-validation-for="Alergia" class="red-text"></span>
+                        </div>
+
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">note</i>
+                            <textarea asp-for="Observaciones" class="materialize-textarea"></textarea>
+                            <label asp-for="Observaciones">Observaciones</label>
+                            <span asp-validation-for="Observaciones" class="red-text"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col s12">
+                            <button class="btn waves-effect waves-light green lighten-1" type="submit">
+                                <i class="material-icons left">save</i>
+                                Guardar
+                            </button>
+                            <a class="waves-effect waves-light btn grey" asp-action="Index">
+                                <i class="material-icons left">arrow_back</i>
+                                Volver
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function(){
+            $('select').formSelect();
+            $('.materialize-textarea').characterCounter();
+        });
+    </script>
+} 

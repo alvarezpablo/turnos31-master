@@ -1,0 +1,79 @@
+@model Turnos31.Models.Raza
+
+@{
+    ViewData["Title"] = "Detalles de Raza";
+}
+
+<div class="row">
+    <div class="col s12">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">@Model.Nombre</span>
+                <div class="row">
+                    <div class="col s12">
+                        <div class="row">
+                            <div class="col s12">
+                                <h6>Especie</h6>
+                                <p>@Model.Especie.Nombre</p>
+                            </div>
+                        </div>
+                        @if (Model.Mascotas.Any())
+                        {
+                            <div class="row">
+                                <div class="col s12">
+                                    <h6>Mascotas de esta raza</h6>
+                                    <table class="striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>Dueño</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var mascota in Model.Mascotas)
+                                            {
+                                                <tr>
+                                                    <td>@mascota.Nombre</td>
+                                                    <td>@mascota.Dueno.Nombre @mascota.Dueno.Apellido</td>
+                                                    <td>
+                                                        <a class="btn-floating btn-small waves-effect waves-light blue" asp-controller="Mascota" asp-action="Edit" asp-route-id="@mascota.IdMascota">
+                                                            <i class="material-icons">edit</i>
+                                                        </a>
+                                                        <a class="btn-floating btn-small waves-effect waves-light green" asp-controller="Mascota" asp-action="Details" asp-route-id="@mascota.IdMascota">
+                                                            <i class="material-icons">visibility</i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="row">
+                                <div class="col s12">
+                                    <p>No hay mascotas registradas de esta raza.</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <a class="waves-effect waves-light btn blue" asp-action="Edit" asp-route-id="@Model.IdRaza">
+                            <i class="material-icons left">edit</i>
+                            Editar
+                        </a>
+                        <a class="waves-effect waves-light btn grey" asp-action="Index">
+                            <i class="material-icons left">arrow_back</i>
+                            Volver
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
