@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Turnos31.Data;
 
@@ -16,65 +15,59 @@ namespace Turnos31.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.5")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
-
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            modelBuilder.HasAnnotation("ProductVersion", "9.0.5");
 
             modelBuilder.Entity("Turnos31.Models.Agenda", b =>
                 {
                     b.Property<int>("IdAgenda")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdAgenda"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("EsUrgente")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Estado")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("FechaHoraFin")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("FechaHoraInicio")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("FechaReserva")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("IdMascota")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("IdVeterinario")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("MascotaIdMascota")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("MotivoVisita")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Observaciones")
                         .IsRequired()
                         .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("TipoConsulta")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("VeterinarioIdVeterinario")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("IdAgenda");
 
@@ -89,13 +82,11 @@ namespace Turnos31.Migrations
                 {
                     b.Property<int>("IdCategoria")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdCategoria"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("IdCategoria");
 
@@ -106,17 +97,15 @@ namespace Turnos31.Migrations
                 {
                     b.Property<int>("IdConsulta")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdConsulta"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Diagnostico")
                         .IsRequired()
                         .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("FechaHora")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal?>("FrecuenciaCardiaca")
                         .HasPrecision(5, 2)
@@ -127,19 +116,19 @@ namespace Turnos31.Migrations
                         .HasColumnType("decimal(5,2)");
 
                     b.Property<int>("IdAgenda")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("MascotaIdMascota")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Motivo")
                         .IsRequired()
                         .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Observaciones")
                         .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal?>("Peso")
                         .HasPrecision(5, 2)
@@ -151,10 +140,10 @@ namespace Turnos31.Migrations
 
                     b.Property<string>("Tratamiento")
                         .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("VeterinarioIdVeterinario")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("IdConsulta");
 
@@ -171,9 +160,7 @@ namespace Turnos31.Migrations
                 {
                     b.Property<int>("IdDiagnostico")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdDiagnostico"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Detalle")
                         .HasColumnType("varchar(MAX)");
@@ -182,10 +169,10 @@ namespace Turnos31.Migrations
                         .HasColumnType("date");
 
                     b.Property<int>("IdConsulta")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Status")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("IdDiagnostico");
 
@@ -198,9 +185,12 @@ namespace Turnos31.Migrations
                 {
                     b.Property<int>("IdDueno")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdDueno"));
+                    b.Property<bool>("Activo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(true);
 
                     b.Property<string>("Apellido")
                         .IsRequired()
@@ -235,9 +225,7 @@ namespace Turnos31.Migrations
                 {
                     b.Property<int>("IdEspecialidad")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdEspecialidad"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -253,9 +241,15 @@ namespace Turnos31.Migrations
                 {
                     b.Property<int>("IdEspecie")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdEspecie"));
+                    b.Property<bool>("Activo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("Descripcion")
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -270,21 +264,19 @@ namespace Turnos31.Migrations
                 {
                     b.Property<int>("IdExamen")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdExamen"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Conjuntival")
                         .HasColumnType("varchar(MAX)");
 
                     b.Property<int>("IdConsulta")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("IdMascota")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("IdVeterinario")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Locomocion")
                         .HasColumnType("varchar(MAX)");
@@ -323,7 +315,7 @@ namespace Turnos31.Migrations
                         .HasColumnType("varchar(MAX)");
 
                     b.Property<int>("Status")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("IdExamen");
 
@@ -340,37 +332,40 @@ namespace Turnos31.Migrations
                 {
                     b.Property<int>("IdFichaIngreso")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdFichaIngreso"));
+                    b.Property<bool>("Activo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(true);
 
                     b.Property<int>("Estado")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("FechaActualizacion")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("FechaHoraIngreso")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("IdDueno")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("IdMascota")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("IdMotivoVisita")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("IdNivelUrgencia")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("IdTipoServicio")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Observaciones")
                         .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("IdFichaIngreso");
 
@@ -391,20 +386,18 @@ namespace Turnos31.Migrations
                 {
                     b.Property<int>("LoginId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LoginId"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Rol")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Usuario")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("LoginId");
 
@@ -415,36 +408,44 @@ namespace Turnos31.Migrations
                 {
                     b.Property<int>("IdMascota")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdMascota"));
+                    b.Property<bool>("Activo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(true);
 
                     b.Property<string>("Alergia")
                         .HasColumnType("varchar(MAX)");
 
                     b.Property<string>("Color")
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue("No especificado");
 
                     b.Property<DateTime?>("FechaNacimiento")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("IdCliente")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("IdDueno")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("IdEspecie")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("IdRaza")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("NumeroMicrochip")
                         .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Observaciones")
                         .HasColumnType("varchar(MAX)");
@@ -477,21 +478,19 @@ namespace Turnos31.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Icono")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("MenuPadreId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Nombre")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Url")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -504,15 +503,13 @@ namespace Turnos31.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("MenuId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("RolId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -527,13 +524,11 @@ namespace Turnos31.Migrations
                 {
                     b.Property<int>("IdMotivoVisita")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdMotivoVisita"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("IdMotivoVisita");
 
@@ -544,13 +539,11 @@ namespace Turnos31.Migrations
                 {
                     b.Property<int>("IdNivelUrgencia")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdNivelUrgencia"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("IdNivelUrgencia");
 
@@ -561,12 +554,10 @@ namespace Turnos31.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("CategoriaId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Costo")
                         .HasColumnType("decimal(18,2)");
@@ -588,10 +579,10 @@ namespace Turnos31.Migrations
                         .HasColumnType("varchar(MAX)");
 
                     b.Property<int>("Status")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Stock")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -604,18 +595,16 @@ namespace Turnos31.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("IdProducto")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("IdTratamiento")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Status")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -630,16 +619,22 @@ namespace Turnos31.Migrations
                 {
                     b.Property<int>("IdRaza")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdRaza"));
+                    b.Property<bool>("Activo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("Descripcion")
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<int>("IdEspecie")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(200)");
 
                     b.HasKey("IdRaza");
 
@@ -652,18 +647,16 @@ namespace Turnos31.Migrations
                 {
                     b.Property<int>("IdResultado")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdResultado"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("FechaRealizacion")
                         .HasColumnType("datetime");
 
                     b.Property<int>("IdConsulta")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("IdExamen")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Resultado")
                         .IsRequired()
@@ -682,15 +675,13 @@ namespace Turnos31.Migrations
                 {
                     b.Property<int>("IdRol")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdRol"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Descripcion")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("NombreRol")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("IdRol");
 
@@ -701,13 +692,11 @@ namespace Turnos31.Migrations
                 {
                     b.Property<int>("IdTipoServicio")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdTipoServicio"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("IdTipoServicio");
 
@@ -718,18 +707,16 @@ namespace Turnos31.Migrations
                 {
                     b.Property<int>("IdTratamiento")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdTratamiento"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Detalle")
                         .HasColumnType("varchar(MAX)");
 
                     b.Property<int>("IdConsulta")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Status")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("IdTratamiento");
 
@@ -742,32 +729,30 @@ namespace Turnos31.Migrations
                 {
                     b.Property<int>("IdTurno")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdTurno"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("Activo")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("DiaSemana")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("DuracionConsulta")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<TimeSpan>("HoraFin")
-                        .HasColumnType("time");
+                        .HasColumnType("TEXT");
 
                     b.Property<TimeSpan>("HoraInicio")
-                        .HasColumnType("time");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("IdVeterinario")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Observaciones")
                         .IsRequired()
                         .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("IdTurno");
 
@@ -780,12 +765,10 @@ namespace Turnos31.Migrations
                 {
                     b.Property<int>("IdUsuario")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdUsuario"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("Activo")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Apellido")
                         .IsRequired()
@@ -796,7 +779,7 @@ namespace Turnos31.Migrations
                         .HasColumnType("varchar(100)");
 
                     b.Property<int>("IdRol")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -820,9 +803,7 @@ namespace Turnos31.Migrations
                 {
                     b.Property<int>("IdVeterinario")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdVeterinario"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Apellido")
                         .IsRequired()
@@ -837,10 +818,10 @@ namespace Turnos31.Migrations
                         .HasColumnType("varchar(100)");
 
                     b.Property<DateTime>("HorarioAtencionDesde")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("HorarioAtencionHasta")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -859,18 +840,16 @@ namespace Turnos31.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("IdEspecialidad")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("IdVeterinario")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Status")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 

@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Turnos31.Data;
 using Turnos31.Models;
+using Turnos31.Filters;
 
 namespace Turnos31.Controllers
 {
+    [TypeFilter(typeof(AuthenticationFilter))]
     public class RazaController(VeterinariaContext context) : Controller
     {
         private readonly VeterinariaContext _context = context;
@@ -46,7 +48,7 @@ namespace Turnos31.Controllers
         // POST: Raza/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Nombre,IdEspecie")] Raza raza)
+        public async Task<IActionResult> Create([Bind("Nombre,IdEspecie,Activo")] Raza raza)
         {
             if (ModelState.IsValid)
             {
@@ -54,6 +56,9 @@ namespace Turnos31.Controllers
                 var especie = await _context.Especies.FindAsync(raza.IdEspecie);
                 if (especie != null)
                 {
+                    // Asegurar que Activo tenga un valor válido (por defecto true)
+                    raza.Activo = true;
+
                     raza.Especie = especie;
                     _context.Add(raza);
                     await _context.SaveChangesAsync();
@@ -85,7 +90,7 @@ namespace Turnos31.Controllers
         // POST: Raza/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdRaza,Nombre,IdEspecie")] Raza raza)
+        public async Task<IActionResult> Edit(int id, [Bind("IdRaza,Nombre,IdEspecie,Activo")] Raza raza)
         {
             if (id != raza.IdRaza)
             {

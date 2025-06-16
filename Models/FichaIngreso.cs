@@ -43,6 +43,9 @@ namespace Turnos31.Models
         [Display(Name = "Fecha de Actualización")]
         public DateTime? FechaActualizacion { get; set; }
 
+        [Display(Name = "Activo")]
+        public bool Activo { get; set; } = true;
+
         // Relaciones
         [ForeignKey("IdDueno")]
         public Dueno Dueno { get; set; } = null!;

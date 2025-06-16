@@ -111,6 +111,41 @@ namespace Turnos31.Data
                 .HasForeignKey(m => m.IdDueno)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            // Configurar propiedades específicas de Mascota
+            modelBuilder.Entity<Mascota>()
+                .Property(m => m.Color)
+                .HasDefaultValue("No especificado");
+
+            // Configurar IdCliente para compatibilidad con hosting
+            modelBuilder.Entity<Mascota>()
+                .Property(m => m.IdCliente)
+                .IsRequired();
+
+            // Configurar Activo con valor por defecto
+            modelBuilder.Entity<Mascota>()
+                .Property(m => m.Activo)
+                .HasDefaultValue(true);
+
+            // Configurar Activo para Dueno con valor por defecto
+            modelBuilder.Entity<Dueno>()
+                .Property(d => d.Activo)
+                .HasDefaultValue(true);
+
+            // Configurar Activo para Especie con valor por defecto
+            modelBuilder.Entity<Especie>()
+                .Property(e => e.Activo)
+                .HasDefaultValue(true);
+
+            // Configurar Activo para Raza con valor por defecto
+            modelBuilder.Entity<Raza>()
+                .Property(r => r.Activo)
+                .HasDefaultValue(true);
+
+            // Configurar Activo para FichaIngreso con valor por defecto
+            modelBuilder.Entity<FichaIngreso>()
+                .Property(f => f.Activo)
+                .HasDefaultValue(true);
+
             // Configurar relaciones de Consulta
             modelBuilder.Entity<Consulta>()
                 .HasOne(c => c.Agenda)

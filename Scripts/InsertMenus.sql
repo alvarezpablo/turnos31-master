@@ -21,7 +21,9 @@ DECLARE @PacientesId INT = (SELECT Id FROM Menus WHERE Nombre = 'Pacientes');
 INSERT INTO Menus (Nombre, Url, Icono, MenuPadreId) VALUES
 ('Usuarios', '/Usuario/Index', 'bi-people', @AdminId),
 ('Roles', '/Rol/Index', 'bi-person-badge', @AdminId),
-('Especialidades', '/Especialidad/Index', 'bi-clipboard2-pulse', @AdminId);
+('Especialidades', '/Especialidad/Index', 'bi-clipboard2-pulse', @AdminId),
+('Especies', '/Especie/Index', 'bi-tags', @AdminId),
+('Razas', '/Raza/Index', 'bi-list-check', @AdminId);
 
 -- Insertar submenús de Médicos
 INSERT INTO Menus (Nombre, Url, Icono, MenuPadreId) VALUES
@@ -31,7 +33,8 @@ INSERT INTO Menus (Nombre, Url, Icono, MenuPadreId) VALUES
 -- Insertar submenús de Pacientes
 INSERT INTO Menus (Nombre, Url, Icono, MenuPadreId) VALUES
 ('Mascotas', '/Mascota/Index', 'bi-paw', @PacientesId),
-('Dueños', '/Dueno/Index', 'bi-person', @PacientesId);
+('Dueños', '/Dueno/Index', 'bi-person', @PacientesId),
+('Fichas de Ingreso', '/FichaIngreso/Index', 'bi-clipboard2-pulse', @PacientesId);
 
 -- Obtener IDs de roles
 DECLARE @AdminRolId INT = (SELECT IdRol FROM Roles WHERE NombreRol = 'Administrador');
@@ -47,4 +50,4 @@ INSERT INTO MenuRoles (MenuId, RolId)
 SELECT m.Id, @VetRolId
 FROM Menus m
 WHERE m.Nombre IN ('Inicio', 'Médicos', 'Pacientes', 'Turnos', 'Consultas')
-   OR m.Nombre IN ('Lista de Médicos', 'Agendas', 'Mascotas', 'Dueños'); 
+   OR m.Nombre IN ('Lista de Médicos', 'Agendas', 'Mascotas', 'Dueños', 'Fichas de Ingreso');

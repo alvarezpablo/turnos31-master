@@ -61,6 +61,14 @@ namespace Turnos31.Models
         [Required]
         [ForeignKey("Dueno")]
         public int IdDueno { get; set; }
+
+        // Propiedades adicionales para compatibilidad con base de datos del hosting
+        [Required]
+        public int IdCliente { get; set; }
+
+        // Campo Activo con valor por defecto true
+        public bool Activo { get; set; } = true;
+
         [ValidateNever]
         public Dueno Dueno { get; set; } = null!;
 

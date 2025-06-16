@@ -7,6 +7,7 @@ namespace Turnos31
     {
         public static void Main(string[] args)
         {
+            Environment.SetEnvironmentVariable("DISABLE_STATIC_WEB_ASSETS", "true");
             CreateHostBuilder(args).Build().Run();
         }
 

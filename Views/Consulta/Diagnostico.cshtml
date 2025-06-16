@@ -1,0 +1,30 @@
+@{
+    ViewData["Title"] = "Diagnóstico de Base de Datos";
+}
+
+<div class="container">
+    <h2>Diagnóstico de Base de Datos</h2>
+    
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">
+            <h4>Error:</h4>
+            <p>@ViewBag.Error</p>
+        </div>
+    }
+    
+    @if (ViewBag.Diagnostico != null)
+    {
+        <div class="alert alert-success">
+            <h4>Información de la Base de Datos:</h4>
+            <ul>
+                @foreach (string info in ViewBag.Diagnostico)
+                {
+                    <li>@info</li>
+                }
+            </ul>
+        </div>
+    }
+    
+    <a href="/Consulta" class="btn btn-primary">Volver a Consultas</a>
+</div>

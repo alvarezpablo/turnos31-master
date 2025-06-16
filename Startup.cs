@@ -13,7 +13,7 @@ namespace Turnos31
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //validacion de accesos 
+            //validacion de accesos
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromSeconds(300);
@@ -23,7 +23,28 @@ namespace Turnos31
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             });
-            services.AddDbContext<VeterinariaContext>(opciones => opciones.UseSqlServer(Configuration.GetConnectionString("VeterinariaContext")));
+
+            // Configurar base de datos según el entorno
+            var connectionString = Configuration.GetConnectionString("VeterinariaContext");
+
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new InvalidOperationException("La cadena de conexión 'VeterinariaContext' no está configurada.");
+            }
+
+            if (connectionString.Contains("Data Source=") || connectionString.Contains("InMemory"))
+            {
+                // Base de datos en memoria para desarrollo
+                services.AddDbContext<VeterinariaContext>(opciones =>
+                    opciones.UseInMemoryDatabase("VeterinariaInMemory"));
+            }
+            else
+            {
+                // SQL Server para producción
+                services.AddDbContext<VeterinariaContext>(opciones =>
+                    opciones.UseSqlServer(connectionString));
+            }
+
             services.AddHttpClient();
         }
 
@@ -33,6 +54,13 @@ namespace Turnos31
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                // Inicializar datos de prueba en desarrollo
+                using (var scope = app.ApplicationServices.CreateScope())
+                {
+                    var context = scope.ServiceProvider.GetRequiredService<VeterinariaContext>();
+                    DataSeeder.SeedData(context);
+                }
             }
             else
             {

@@ -1,0 +1,182 @@
+@model Turnos31.Models.FichaIngreso
+
+@{
+    ViewData["Title"] = "Detalles de Ficha de Ingreso";
+}
+
+<div class="container">
+    <div class="card shadow-sm">
+        <div class="card-header bg-info text-white">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-clipboard2-pulse fs-4 me-2"></i>
+                <h5 class="card-title mb-0">Detalles de Ficha de Ingreso</h5>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0"><i class="bi bi-person me-2"></i>Información del Dueño</h6>
+                        </div>
+                        <div class="card-body">
+                            <dl class="row">
+                                <dt class="col-sm-4">Nombre:</dt>
+                                <dd class="col-sm-8">@(Model.Dueno?.Nombre ?? "No especificado") @(Model.Dueno?.Apellido ?? "")</dd>
+                                
+                                <dt class="col-sm-4">Teléfono:</dt>
+                                <dd class="col-sm-8">@(Model.Dueno?.Telefono ?? "No especificado")</dd>
+                                
+                                <dt class="col-sm-4">Email:</dt>
+                                <dd class="col-sm-8">@(Model.Dueno?.Email ?? "No especificado")</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0"><i class="bi bi-paw me-2"></i>Información de la Mascota</h6>
+                        </div>
+                        <div class="card-body">
+                            <dl class="row">
+                                <dt class="col-sm-4">Nombre:</dt>
+                                <dd class="col-sm-8">@(Model.Mascota?.Nombre ?? "No especificado")</dd>
+                                
+                                <dt class="col-sm-4">Especie:</dt>
+                                <dd class="col-sm-8">@(Model.Mascota?.Especie?.Nombre ?? "No especificado")</dd>
+                                
+                                <dt class="col-sm-4">Raza:</dt>
+                                <dd class="col-sm-8">@(Model.Mascota?.Raza?.Nombre ?? "No especificado")</dd>
+                                
+                                <dt class="col-sm-4">Edad:</dt>
+                                <dd class="col-sm-8">
+                                    @if (Model.Mascota?.FechaNacimiento.HasValue == true)
+                                    {
+                                        <span>@Model.Mascota.Edad años</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">No especificado</span>
+                                    }
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0"><i class="bi bi-clipboard2-pulse me-2"></i>Detalles de la Ficha</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <dl class="row">
+                                        <dt class="col-sm-5">Fecha y Hora de Ingreso:</dt>
+                                        <dd class="col-sm-7">
+                                            <span class="badge bg-primary">
+                                                @Model.FechaHoraIngreso.ToString("dd/MM/yyyy HH:mm")
+                                            </span>
+                                        </dd>
+                                        
+                                        <dt class="col-sm-5">Nivel de Urgencia:</dt>
+                                        <dd class="col-sm-7">
+                                            <span class="badge @(GetUrgenciaBadgeClass(Model.NivelUrgencia?.Nombre))">
+                                                @(Model.NivelUrgencia?.Nombre ?? "No especificado")
+                                            </span>
+                                        </dd>
+                                        
+                                        <dt class="col-sm-5">Motivo de Visita:</dt>
+                                        <dd class="col-sm-7">@(Model.MotivoVisita?.Nombre ?? "No especificado")</dd>
+                                    </dl>
+                                </div>
+                                <div class="col-md-6">
+                                    <dl class="row">
+                                        <dt class="col-sm-5">Tipo de Servicio:</dt>
+                                        <dd class="col-sm-7">@(Model.TipoServicio?.Nombre ?? "No especificado")</dd>
+                                        
+                                        <dt class="col-sm-5">Estado:</dt>
+                                        <dd class="col-sm-7">
+                                            <span class="badge @(GetEstadoBadgeClass(Model.Estado))">
+                                                @Model.Estado.ToString()
+                                            </span>
+                                        </dd>
+                                        
+                                        @if (Model.FechaActualizacion.HasValue)
+                                        {
+                                            <dt class="col-sm-5">Última Actualización:</dt>
+                                            <dd class="col-sm-7">
+                                                <small class="text-muted">
+                                                    @Model.FechaActualizacion.Value.ToString("dd/MM/yyyy HH:mm")
+                                                </small>
+                                            </dd>
+                                        }
+                                    </dl>
+                                </div>
+                            </div>
+                            
+                            @if (!string.IsNullOrEmpty(Model.Observaciones))
+                            {
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        <dt>Observaciones:</dt>
+                                        <dd class="mt-2">
+                                            <div class="alert alert-light border">
+                                                @Model.Observaciones
+                                            </div>
+                                        </dd>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left me-2"></i>Volver a la Lista
+                </a>
+                <div>
+                    <a asp-action="Edit" asp-route-id="@Model.IdFichaIngreso" class="btn btn-primary">
+                        <i class="bi bi-pencil me-2"></i>Editar
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@Model.IdFichaIngreso" class="btn btn-outline-danger">
+                        <i class="bi bi-trash me-2"></i>Eliminar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    string GetUrgenciaBadgeClass(string? urgencia)
+    {
+        return urgencia?.ToLower() switch
+        {
+            "urgencia" => "bg-danger",
+            "control" => "bg-success",
+            "consulta" => "bg-info",
+            "examen" => "bg-warning text-dark",
+            _ => "bg-secondary"
+        };
+    }
+
+    string GetEstadoBadgeClass(Turnos31.Models.EstadoFichaIngreso estado)
+    {
+        return estado switch
+        {
+            Turnos31.Models.EstadoFichaIngreso.Activa => "bg-success",
+            Turnos31.Models.EstadoFichaIngreso.EnProceso => "bg-warning text-dark",
+            Turnos31.Models.EstadoFichaIngreso.Completada => "bg-primary",
+            Turnos31.Models.EstadoFichaIngreso.Cancelada => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+}

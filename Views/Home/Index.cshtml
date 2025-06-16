@@ -4,6 +4,15 @@
     ViewData["Title"] = "Inicio";
 }
 
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        @ViewBag.ErrorMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
 <div class="container">
     <div class="row g-4 mb-4">
         <div class="col-md-4">

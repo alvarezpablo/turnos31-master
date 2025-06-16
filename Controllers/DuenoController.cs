@@ -48,17 +48,98 @@ namespace Turnos31.Controllers
             return View();
         }
 
+        // GET: Dueno/CreateModal - Para cargar en modal
+        public IActionResult CreateModal()
+        {
+            return PartialView("_CreatePartial", new Dueno { Activo = true });
+        }
+
+        // POST: Dueno/CreateAjaxModal - Método específico para modal AJAX
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateAjaxModal([Bind("Nombre,Apellido,Direccion,Rut,Telefono,Email,Activo")] Dueno dueno)
+        {
+            try
+            {
+                // Verificar que el contexto esté disponible
+                if (_context == null)
+                {
+                    return Json(new { success = false, error = "Error de configuración: contexto de base de datos no disponible" });
+                }
+
+                // Validar campos requeridos
+                if (string.IsNullOrWhiteSpace(dueno.Nombre))
+                {
+                    return Json(new { success = false, error = "El nombre es requerido" });
+                }
+
+                if (string.IsNullOrWhiteSpace(dueno.Apellido))
+                {
+                    return Json(new { success = false, error = "El apellido es requerido" });
+                }
+
+                if (string.IsNullOrWhiteSpace(dueno.Telefono))
+                {
+                    return Json(new { success = false, error = "El teléfono es requerido" });
+                }
+
+                if (string.IsNullOrWhiteSpace(dueno.Email))
+                {
+                    return Json(new { success = false, error = "El email es requerido" });
+                }
+
+                // Configurar valores por defecto
+                dueno.IdDueno = 0; // Asegurar que EF genere el ID
+                dueno.Activo = true;
+
+                // Guardar con Entity Framework
+                _context.Add(dueno);
+                await _context.SaveChangesAsync();
+
+                return Json(new { success = true, id = dueno.IdDueno, nombre = $"{dueno.Nombre} {dueno.Apellido}" });
+            }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException dbEx)
+            {
+                var innerMessage = dbEx.InnerException?.Message ?? dbEx.Message;
+                return Json(new { success = false, error = $"Error de base de datos: {innerMessage}" });
+            }
+            catch (InvalidOperationException ioEx)
+            {
+                return Json(new { success = false, error = $"Error de configuración: {ioEx.Message}" });
+            }
+            catch (Exception ex)
+            {
+                var innerMessage = ex.InnerException?.Message ?? ex.Message;
+                return Json(new { success = false, error = $"Error al guardar: {innerMessage}" });
+            }
+        }
+
         // POST: Dueno/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdDueno,Nombre,Apellido,Direccion,Rut,Telefono,Email")] Dueno dueno)
+        public async Task<IActionResult> Create([Bind("IdDueno,Nombre,Apellido,Direccion,Rut,Telefono,Email,Activo")] Dueno dueno)
         {
             if (ModelState.IsValid)
             {
+                dueno.Activo = true; // Asegurar que esté activo
                 _context.Add(dueno);
                 await _context.SaveChangesAsync();
+
+                // Si es una petición AJAX, retornar JSON
+                if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                {
+                    return Json(new { success = true, id = dueno.IdDueno, nombre = $"{dueno.Nombre} {dueno.Apellido}" });
+                }
+
                 return RedirectToAction(nameof(Index));
             }
+
+            // Si es una petición AJAX y hay errores, retornar la vista parcial
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_CreatePartial", dueno);
+            }
+
             return View(dueno);
         }
 
@@ -81,7 +162,7 @@ namespace Turnos31.Controllers
         // POST: Dueno/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdDueno,Nombre,Apellido,Direccion,Rut,Telefono,Email")] Dueno dueno)
+        public async Task<IActionResult> Edit(int id, [Bind("IdDueno,Nombre,Apellido,Direccion,Rut,Telefono,Email,Activo")] Dueno dueno)
         {
             if (id != dueno.IdDueno)
             {
@@ -146,7 +227,7 @@ namespace Turnos31.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateAjax([Bind("Nombre,Apellido,Rut,Direccion,Telefono,Email")] Dueno dueno)
+        public IActionResult CreateAjax([Bind("Nombre,Apellido,Rut,Direccion,Telefono,Email,Activo")] Dueno dueno)
         {
             if (ModelState.IsValid)
             {

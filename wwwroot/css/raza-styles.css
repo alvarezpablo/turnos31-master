@@ -1,0 +1,155 @@
+/* Estilos personalizados para la gestión de razas */
+
+/* Animaciones suaves */
+.card {
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+}
+
+/* Botones mejorados */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.btn-group .btn {
+    margin: 0 2px;
+}
+
+/* Formularios flotantes mejorados */
+.form-floating > label {
+    font-weight: 500;
+    color: #6c757d;
+}
+
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label,
+.form-floating > .form-select ~ label {
+    color: #0d6efd;
+}
+
+/* Headers de tarjetas con gradiente */
+.card-header.bg-primary {
+    background: linear-gradient(135deg, #0d6efd 0%, #0056b3 100%) !important;
+}
+
+.card-header.bg-info {
+    background: linear-gradient(135deg, #0dcaf0 0%, #087990 100%) !important;
+}
+
+.card-header.bg-warning {
+    background: linear-gradient(135deg, #ffc107 0%, #d39e00 100%) !important;
+}
+
+.card-header.bg-danger {
+    background: linear-gradient(135deg, #dc3545 0%, #b02a37 100%) !important;
+}
+
+/* Badges mejorados */
+.badge {
+    font-weight: 500;
+    padding: 0.5em 0.75em;
+    border-radius: 6px;
+}
+
+/* Tablas mejoradas */
+.table th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+/* Estados vacíos */
+.empty-state {
+    padding: 3rem 1rem;
+    text-align: center;
+}
+
+.empty-state i {
+    font-size: 4rem;
+    color: #dee2e6;
+    margin-bottom: 1rem;
+}
+
+/* Alertas mejoradas */
+.alert {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* Animación de carga */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Responsive mejoras */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1.5rem !important;
+    }
+    
+    .btn-lg {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+    }
+    
+    .display-4 {
+        font-size: 2.5rem;
+    }
+}
+
+/* Iconos con animación */
+.btn i {
+    transition: transform 0.2s ease;
+}
+
+.btn:hover i {
+    transform: scale(1.1);
+}
+
+/* Mejoras para formularios */
+.form-control:focus,
+.form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+}
+
+/* Estadísticas destacadas */
+.stat-card {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-left: 4px solid #0d6efd;
+}
+
+/* Mejoras para la navegación de breadcrumb */
+.breadcrumb {
+    background: transparent;
+    padding: 0;
+    margin-bottom: 1.5rem;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "›";
+    font-weight: bold;
+    color: #6c757d;
+}

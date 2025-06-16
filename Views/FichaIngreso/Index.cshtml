@@ -1,0 +1,206 @@
+@model IEnumerable<Turnos31.Models.FichaIngreso>
+
+@{
+    ViewData["Title"] = "Fichas de Ingreso";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        @ViewBag.ErrorMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="container">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-clipboard2-pulse fs-4 me-2"></i>
+                <h5 class="card-title mb-0">Fichas de Ingreso de Mascotas</h5>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <a class="btn btn-success" asp-action="Create">
+                    <i class="bi bi-plus-circle me-2"></i>Nueva Ficha de Ingreso
+                </a>
+            </div>
+
+            <!-- Filtros de búsqueda -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <form asp-action="Index" method="get" class="row g-3">
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                <select name="idDueno" asp-items="ViewBag.IdDueno" class="form-select">
+                                    <option value="">Todos los dueños</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-paw"></i></span>
+                                <select name="idMascota" asp-items="ViewBag.IdMascota" class="form-select">
+                                    <option value="">Todas las mascotas</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-exclamation-triangle"></i></span>
+                                <select name="idNivelUrgencia" asp-items="ViewBag.IdNivelUrgencia" class="form-select">
+                                    <option value="">Todos los niveles</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-primary w-100" type="submit">
+                                <i class="bi bi-search me-2"></i>Buscar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Información sobre resultados -->
+            <div class="mb-3">
+                <small class="text-muted">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Se encontraron @Model.Count() ficha(s) de ingreso
+                </small>
+            </div>
+
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th><i class="bi bi-calendar me-1"></i>Fecha/Hora</th>
+                                <th><i class="bi bi-person me-1"></i>Dueño</th>
+                                <th><i class="bi bi-paw me-1"></i>Mascota</th>
+                                <th><i class="bi bi-exclamation-triangle me-1"></i>Urgencia</th>
+                                <th><i class="bi bi-clipboard me-1"></i>Motivo</th>
+                                <th><i class="bi bi-gear me-1"></i>Servicio</th>
+                                <th><i class="bi bi-flag me-1"></i>Estado</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <small class="text-muted">@item.FechaHoraIngreso.ToString("dd/MM/yyyy")</small><br>
+                                        <small class="text-primary">@item.FechaHoraIngreso.ToString("HH:mm")</small>
+                                    </td>
+                                    <td>
+                                        <strong>@(item.Dueno?.Nombre ?? "Sin dueño") @(item.Dueno?.Apellido ?? "")</strong>
+                                    </td>
+                                    <td>
+                                        <strong>@(item.Mascota?.Nombre ?? "Sin mascota")</strong><br>
+                                        <small class="text-muted">@(item.Mascota?.Especie?.Nombre ?? "") - @(item.Mascota?.Raza?.Nombre ?? "")</small>
+                                    </td>
+                                    <td>
+                                        <span class="badge @(GetUrgenciaBadgeClass(item.NivelUrgencia?.Nombre))">
+                                            @(item.NivelUrgencia?.Nombre ?? "Sin nivel")
+                                        </span>
+                                    </td>
+                                    <td>@(item.MotivoVisita?.Nombre ?? "Sin motivo")</td>
+                                    <td>@(item.TipoServicio?.Nombre ?? "Sin servicio")</td>
+                                    <td>
+                                        <span class="badge @(GetEstadoBadgeClass(item.Estado))">
+                                            @item.Estado.ToString()
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <a asp-action="Edit" asp-route-id="@item.IdFichaIngreso"
+                                               class="btn btn-sm btn-outline-primary" title="Editar">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a asp-action="Details" asp-route-id="@item.IdFichaIngreso"
+                                               class="btn btn-sm btn-outline-info" title="Detalles">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            <a asp-action="Delete" asp-route-id="@item.IdFichaIngreso"
+                                               class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <i class="bi bi-clipboard2-pulse fs-1 text-muted mb-3"></i>
+                    <h5 class="text-muted">No se encontraron fichas de ingreso</h5>
+                    <p class="text-muted">No hay fichas de ingreso registradas que coincidan con los criterios de búsqueda.</p>
+                    <a asp-action="Create" class="btn btn-primary">
+                        <i class="bi bi-plus-circle me-2"></i>Crear Primera Ficha de Ingreso
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@functions {
+    string GetUrgenciaBadgeClass(string? urgencia)
+    {
+        return urgencia?.ToLower() switch
+        {
+            "urgencia" => "bg-danger",
+            "control" => "bg-success",
+            "consulta" => "bg-info",
+            "examen" => "bg-warning text-dark",
+            _ => "bg-secondary"
+        };
+    }
+
+    string GetEstadoBadgeClass(Turnos31.Models.EstadoFichaIngreso estado)
+    {
+        return estado switch
+        {
+            Turnos31.Models.EstadoFichaIngreso.Activa => "bg-success",
+            Turnos31.Models.EstadoFichaIngreso.EnProceso => "bg-warning text-dark",
+            Turnos31.Models.EstadoFichaIngreso.Completada => "bg-primary",
+            Turnos31.Models.EstadoFichaIngreso.Cancelada => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('select').formSelect();
+        });
+    </script>
+}

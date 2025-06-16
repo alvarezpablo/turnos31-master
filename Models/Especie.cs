@@ -13,6 +13,13 @@ namespace Turnos31.Models
         [Column(TypeName = "varchar(100)")]
         public string Nombre { get; set; } = null!;
 
+        [Display(Name = "Descripción")]
+        [Column(TypeName = "nvarchar(1000)")]
+        public string? Descripcion { get; set; }
+
+        [Display(Name = "Activo")]
+        public bool Activo { get; set; } = true;
+
         public ICollection<Mascota> Mascotas { get; set; } = new List<Mascota>();
         public ICollection<Raza> Razas { get; set; } = new List<Raza>();
     }

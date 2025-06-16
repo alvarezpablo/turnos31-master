@@ -4,50 +4,114 @@
     ViewData["Title"] = "Eliminar Raza";
 }
 
-<div class="row">
-    <div class="col s12">
-        <div class="card">
-            <div class="card-content">
-                <span class="card-title">¿Está seguro de eliminar esta raza?</span>
-                <div class="row">
-                    <div class="col s12">
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-danger text-white">
+                <h4 class="card-title mb-0">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    Confirmar Eliminación
+                </h4>
+            </div>
+            <div class="card-body p-4">
+                <div class="alert alert-warning" role="alert">
+                    <i class="bi bi-question-circle me-2"></i>
+                    <strong>¿Está seguro de que desea eliminar esta raza?</strong>
+                    <br>Esta acción no se puede deshacer.
+                </div>
+
+                <!-- Información de la raza -->
+                <div class="card bg-light mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">
+                            <i class="bi bi-tag me-2"></i>Información de la Raza
+                        </h5>
                         <div class="row">
-                            <div class="col s12">
-                                <h5>@Model.Nombre</h5>
-                                <p>Especie: @Model.Especie.Nombre</p>
+                            <div class="col-sm-3">
+                                <strong>Nombre:</strong>
+                            </div>
+                            <div class="col-sm-9">
+                                <span class="badge bg-primary fs-6">@Model.Nombre</span>
                             </div>
                         </div>
-                        @if (Model.Mascotas.Any())
-                        {
-                            <div class="row">
-                                <div class="col s12">
-                                    <div class="card-panel red lighten-4">
-                                        <span class="red-text text-darken-4">
-                                            <i class="material-icons left">warning</i>
-                                            Esta raza tiene @Model.Mascotas.Count mascotas asociadas. No se puede eliminar hasta que se reasignen o eliminen las mascotas.
-                                        </span>
-                                    </div>
-                                </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <strong>Especie:</strong>
                             </div>
-                        }
-                        <form asp-action="Delete">
-                            <input type="hidden" asp-for="IdRaza" />
-                            <div class="row">
-                                <div class="col s12">
-                                    <button type="submit" class="waves-effect waves-light btn red" @(Model.Mascotas.Any() ? "disabled" : "")>
-                                        <i class="material-icons left">delete</i>
-                                        Eliminar
-                                    </button>
-                                    <a class="waves-effect waves-light btn grey" asp-action="Index">
-                                        <i class="material-icons left">arrow_back</i>
-                                        Volver
-                                    </a>
-                                </div>
+                            <div class="col-sm-9">
+                                <span class="badge bg-secondary fs-6">@Model.Especie.Nombre</span>
                             </div>
-                        </form>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <strong>Mascotas:</strong>
+                            </div>
+                            <div class="col-sm-9">
+                                <span class="badge bg-info fs-6">@Model.Mascotas.Count() registradas</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <!-- Advertencia si hay mascotas asociadas -->
+                @if (Model.Mascotas.Any())
+                {
+                    <div class="alert alert-danger" role="alert">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        <strong>¡Atención!</strong> Esta raza tiene <strong>@Model.Mascotas.Count() mascotas</strong> asociadas.
+                        No se puede eliminar hasta que se reasignen o eliminen las mascotas relacionadas.
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="mb-0">Mascotas que deben ser reasignadas:</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                @foreach (var mascota in Model.Mascotas.Take(5))
+                                {
+                                    <div class="col-md-6 mb-2">
+                                        <span class="badge bg-warning text-dark">@mascota.Nombre</span>
+                                    </div>
+                                }
+                                @if (Model.Mascotas.Count() > 5)
+                                {
+                                    <div class="col-12">
+                                        <small class="text-muted">... y @(Model.Mascotas.Count() - 5) más</small>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- Formulario de eliminación -->
+                <form asp-action="Delete" method="post" class="mt-4">
+                    <input type="hidden" asp-for="IdRaza" />
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a class="btn btn-outline-secondary btn-lg me-md-2" asp-action="Index">
+                            <i class="bi bi-arrow-left me-1"></i>
+                            Cancelar
+                        </a>
+                        @if (Model.Mascotas.Any())
+                        {
+                            <button type="button" class="btn btn-danger btn-lg" disabled>
+                                <i class="bi bi-trash me-1"></i>
+                                No se puede eliminar
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-danger btn-lg" onclick="return confirm('¿Está completamente seguro de eliminar esta raza?')">
+                                <i class="bi bi-trash me-1"></i>
+                                Confirmar Eliminación
+                            </button>
+                        }
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-</div> 
+</div>

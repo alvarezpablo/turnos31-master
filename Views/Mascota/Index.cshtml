@@ -4,6 +4,15 @@
     ViewData["Title"] = "Mascotas";
 }
 
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        @ViewBag.ErrorMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
 <div class="container">
     <div class="card shadow-sm">
         <div class="card-header bg-primary text-white">
@@ -39,46 +48,74 @@
                 </div>
             </div>
 
-            <div class="table-responsive">
-                <table class="table table-hover align-middle">
-                    <thead class="table-light">
-                        <tr>
-                            <th><i class="bi bi-paw me-1"></i>Nombre</th>
-                            <th><i class="bi bi-tag me-1"></i>Especie</th>
-                            <th><i class="bi bi-tag-fill me-1"></i>Raza</th>
-                            <th><i class="bi bi-person me-1"></i>Dueño</th>
-                            <th class="text-center">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>@item.Nombre</td>
-                                <td>@item.Especie?.Nombre</td>
-                                <td>@item.Raza?.Nombre</td>
-                                <td>@item.Dueno?.Nombre @item.Dueno?.Apellido</td>
-                                <td>
-                                    <div class="d-flex justify-content-center gap-2">
-                                        <a asp-action="Edit" asp-route-id="@item.IdMascota" 
-                                           class="btn btn-sm btn-outline-primary" title="Editar">
-                                            <i class="bi bi-pencil"></i>
-                                        </a>
-                                        <a asp-action="Details" asp-route-id="@item.IdMascota" 
-                                           class="btn btn-sm btn-outline-info" title="Detalles">
-                                            <i class="bi bi-eye"></i>
-                                        </a>
-                                        <a asp-action="Delete" asp-route-id="@item.IdMascota" 
-                                           class="btn btn-sm btn-outline-danger" title="Eliminar">
-                                            <i class="bi bi-trash"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+            <!-- Información sobre resultados -->
+            <div class="mb-3">
+                <small class="text-muted">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Se encontraron @Model.Count() mascota(s)
+                </small>
             </div>
+
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th><i class="bi bi-paw me-1"></i>Nombre</th>
+                                <th><i class="bi bi-tag me-1"></i>Especie</th>
+                                <th><i class="bi bi-tag-fill me-1"></i>Raza</th>
+                                <th><i class="bi bi-person me-1"></i>Dueño</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong>@(item.Nombre ?? "Sin nombre")</strong>
+                                        @if (string.IsNullOrEmpty(item.Nombre))
+                                        {
+                                            <span class="badge bg-warning text-dark ms-1">Sin nombre</span>
+                                        }
+                                    </td>
+                                    <td>@(item.Especie?.Nombre ?? "Sin especie")</td>
+                                    <td>@(item.Raza?.Nombre ?? "Sin raza")</td>
+                                    <td>@(item.Dueno?.Nombre ?? "Sin dueño") @(item.Dueno?.Apellido ?? "")</td>
+                                    <td>
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <a asp-action="Edit" asp-route-id="@item.IdMascota"
+                                               class="btn btn-sm btn-outline-primary" title="Editar">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a asp-action="Details" asp-route-id="@item.IdMascota"
+                                               class="btn btn-sm btn-outline-info" title="Detalles">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            <a asp-action="Delete" asp-route-id="@item.IdMascota"
+                                               class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <i class="bi bi-search fs-1 text-muted mb-3"></i>
+                    <h5 class="text-muted">No se encontraron mascotas</h5>
+                    <p class="text-muted">No hay mascotas registradas que coincidan con los criterios de búsqueda.</p>
+                    <a asp-action="Create" class="btn btn-primary">
+                        <i class="bi bi-plus-circle me-2"></i>Registrar Primera Mascota
+                    </a>
+                </div>
+            }
         </div>
     </div>
 </div>

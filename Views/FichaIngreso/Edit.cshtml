@@ -1,0 +1,421 @@
+@model Turnos31.ViewModels.FichaIngresoViewModel
+
+@{
+    ViewData["Title"] = "Editar Ficha de Ingreso";
+}
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        @ViewBag.ErrorMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="container">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-pencil fs-4 me-2"></i>
+                <h5 class="card-title mb-0">@ViewData["Title"]</h5>
+            </div>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit" method="post">
+                <input type="hidden" asp-for="IdFichaIngreso" />
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="bi bi-person me-2"></i>Información del Dueño y Mascota</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label asp-for="IdDueno" class="form-label">
+                                        <i class="bi bi-person me-1"></i>@Html.DisplayNameFor(m => m.IdDueno)
+                                    </label>
+                                    <select asp-for="IdDueno" id="selectDueno" class="form-select" asp-items="Model.Duenos">
+                                        <option value="">Seleccione un dueño</option>
+                                    </select>
+                                    <span asp-validation-for="IdDueno" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="IdMascota" class="form-label">
+                                        <i class="bi bi-paw me-1"></i>@Html.DisplayNameFor(m => m.IdMascota)
+                                    </label>
+                                    <select asp-for="IdMascota" id="selectMascota" class="form-select" asp-items="Model.Mascotas">
+                                        <option value="">Seleccione una mascota</option>
+                                    </select>
+                                    <span asp-validation-for="IdMascota" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="bi bi-clipboard2-pulse me-2"></i>Información de la Consulta</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label asp-for="IdNivelUrgencia" class="form-label">
+                                        <i class="bi bi-exclamation-triangle me-1"></i>@Html.DisplayNameFor(m => m.IdNivelUrgencia)
+                                    </label>
+                                    <select asp-for="IdNivelUrgencia" class="form-select" asp-items="Model.NivelesUrgencia">
+                                        <option value="">Seleccione el nivel de urgencia</option>
+                                    </select>
+                                    <span asp-validation-for="IdNivelUrgencia" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="IdMotivoVisita" class="form-label">
+                                        <i class="bi bi-clipboard me-1"></i>@Html.DisplayNameFor(m => m.IdMotivoVisita)
+                                    </label>
+                                    <select asp-for="IdMotivoVisita" class="form-select" asp-items="Model.MotivosVisita">
+                                        <option value="">Seleccione el motivo de visita</option>
+                                    </select>
+                                    <span asp-validation-for="IdMotivoVisita" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="IdTipoServicio" class="form-label">
+                                        <i class="bi bi-gear me-1"></i>@Html.DisplayNameFor(m => m.IdTipoServicio)
+                                    </label>
+                                    <select asp-for="IdTipoServicio" class="form-select" asp-items="Model.TiposServicio">
+                                        <option value="">Seleccione el tipo de servicio</option>
+                                    </select>
+                                    <span asp-validation-for="IdTipoServicio" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="bi bi-flag me-2"></i>Estado de la Ficha</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label asp-for="Estado" class="form-label">
+                                        <i class="bi bi-flag me-1"></i>@Html.DisplayNameFor(m => m.Estado)
+                                    </label>
+                                    <select asp-for="Estado" class="form-select" asp-items="Model.Estados">
+                                        <option value="">Seleccione el estado</option>
+                                    </select>
+                                    <span asp-validation-for="Estado" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">
+                                        <i class="bi bi-calendar me-1"></i>Fecha de Ingreso
+                                    </label>
+                                    <input type="text" class="form-control" 
+                                           value="@Model.FechaHoraIngreso.ToString("dd/MM/yyyy HH:mm")" 
+                                           readonly />
+                                    <div class="form-text">Esta fecha no se puede modificar</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="bi bi-chat-text me-2"></i>Observaciones</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label asp-for="Observaciones" class="form-label">
+                                        <i class="bi bi-chat-text me-1"></i>@Html.DisplayNameFor(m => m.Observaciones)
+                                    </label>
+                                    <textarea asp-for="Observaciones" class="form-control" rows="6" 
+                                              placeholder="Ingrese observaciones adicionales sobre la mascota o la consulta..."></textarea>
+                                    <span asp-validation-for="Observaciones" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left me-2"></i>Cancelar
+                    </a>
+                    <div>
+                        <a asp-action="Details" asp-route-id="@Model.IdFichaIngreso" class="btn btn-outline-info">
+                            <i class="bi bi-eye me-2"></i>Ver Detalles
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle me-2"></i>Guardar Cambios
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Agregar Dueño -->
+<div class="modal fade" id="modalAgregarDueno" tabindex="-1" aria-labelledby="modalAgregarDuenoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="modalAgregarDuenoLabel">
+                    <i class="bi bi-person-plus me-2"></i>Agregar Nuevo Dueño
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="contenidoModalDueno">
+                    <div class="text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                        <p class="mt-2">Cargando formulario...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Agregar Mascota -->
+<div class="modal fade" id="modalAgregarMascota" tabindex="-1" aria-labelledby="modalAgregarMascotaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="modalAgregarMascotaLabel">
+                    <i class="bi bi-paw me-2"></i>Agregar Nueva Mascota
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="contenidoModalMascota">
+                    <div class="text-center">
+                        <div class="spinner-border text-success" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                        <p class="mt-2">Cargando formulario...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(document).ready(function() {
+            // Manejar cambio en select de dueño
+            $('#selectDueno').change(function() {
+                var selectedValue = $(this).val();
+                if (selectedValue === '0') {
+                    abrirModalDueno();
+                    $(this).val(''); // Resetear el select
+                }
+            });
+
+            // Manejar cambio en select de mascota
+            $('#selectMascota').change(function() {
+                var selectedValue = $(this).val();
+                if (selectedValue === '0') {
+                    abrirModalMascota();
+                    $(this).val(''); // Resetear el select
+                }
+            });
+
+            // Función para configurar el formulario de dueño
+            function configurarFormularioDueno() {
+                $('#contenidoModalDueno form').off('submit').on('submit', function(e) {
+                    e.preventDefault();
+
+                    var formData = $(this).serialize();
+                    var actionUrl = $(this).attr('action');
+
+                    $.ajax({
+                        url: actionUrl,
+                        type: 'POST',
+                        data: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                $('#modalAgregarDueno').modal('hide');
+                                actualizarComboDuenos();
+
+                                // Mostrar mensaje de éxito
+                                toastr.success('Dueño agregado exitosamente');
+                            } else {
+                                // Mostrar errores de validación
+                                $('#contenidoModalDueno').html(response);
+
+                                // Re-configurar el evento submit para el nuevo formulario
+                                configurarFormularioDueno();
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error AJAX:', xhr.responseText);
+                            toastr.error('Error al agregar el dueño: ' + error);
+                        }
+                    });
+                });
+            }
+
+            // Función para abrir modal de dueño
+            function abrirModalDueno() {
+                $('#modalAgregarDueno').modal('show');
+
+                // Cargar el formulario de crear dueño
+                $.get('/Dueno/CreateModal')
+                    .done(function(data) {
+                        $('#contenidoModalDueno').html(data);
+                        configurarFormularioDueno();
+                    })
+                    .fail(function() {
+                        $('#contenidoModalDueno').html('<div class="alert alert-danger">Error al cargar el formulario</div>');
+                    });
+            }
+
+            // Función para configurar funcionalidad de especies/razas
+            function configurarEspeciesRazas() {
+                $('#selectEspecie').off('change').on('change', function() {
+                    var especieId = $(this).val();
+                    var razaSelect = $('#selectRaza');
+
+                    // Limpiar el select de razas
+                    razaSelect.empty();
+                    razaSelect.append('<option value="">Seleccione una raza</option>');
+
+                    if (especieId) {
+                        // Cargar razas por especie
+                        $.get('/Mascota/GetRazasByEspecie', { idEspecie: especieId })
+                            .done(function(razas) {
+                                $.each(razas, function(index, raza) {
+                                    razaSelect.append('<option value="' + raza.value + '">' + raza.text + '</option>');
+                                });
+                            })
+                            .fail(function() {
+                                console.error('Error al cargar las razas');
+                            });
+                    }
+                });
+            }
+
+            // Función para configurar el formulario de mascota
+            function configurarFormularioMascota() {
+                $('#contenidoModalMascota form').off('submit').on('submit', function(e) {
+                    e.preventDefault();
+
+                    var formData = $(this).serialize();
+                    var actionUrl = $(this).attr('action');
+
+                    $.ajax({
+                        url: actionUrl,
+                        type: 'POST',
+                        data: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                $('#modalAgregarMascota').modal('hide');
+                                actualizarComboMascotas();
+
+                                // Mostrar mensaje de éxito
+                                toastr.success('Mascota agregada exitosamente');
+                            } else {
+                                // Mostrar errores de validación
+                                $('#contenidoModalMascota').html(response);
+
+                                // Re-configurar eventos
+                                configurarEspeciesRazas();
+                                configurarFormularioMascota();
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error AJAX:', xhr.responseText);
+                            toastr.error('Error al agregar la mascota: ' + error);
+                        }
+                    });
+                });
+            }
+
+            // Función para abrir modal de mascota
+            function abrirModalMascota() {
+                $('#modalAgregarMascota').modal('show');
+
+                // Cargar el formulario de crear mascota
+                $.get('/Mascota/CreateModal')
+                    .done(function(data) {
+                        $('#contenidoModalMascota').html(data);
+                        configurarEspeciesRazas();
+                        configurarFormularioMascota();
+                    })
+                    .fail(function() {
+                        $('#contenidoModalMascota').html('<div class="alert alert-danger">Error al cargar el formulario</div>');
+                    });
+            }
+
+            // Función para actualizar combo de dueños
+            function actualizarComboDuenos() {
+                $.get('/FichaIngreso/GetDuenos')
+                    .done(function(response) {
+                        if (response.success) {
+                            var select = $('#selectDueno');
+                            var valorActual = select.val();
+
+                            // Limpiar opciones excepto la primera y la de "Agregar dueño"
+                            select.find('option').not(':first').remove();
+
+                            // Agregar opción "Agregar dueño"
+                            select.append('<option value="0">Agregar dueño</option>');
+
+                            // Agregar los dueños
+                            $.each(response.data, function(index, dueno) {
+                                select.append('<option value="' + dueno.value + '">' + dueno.text + '</option>');
+                            });
+                        }
+                    })
+                    .fail(function() {
+                        toastr.error('Error al actualizar la lista de dueños');
+                    });
+            }
+
+            // Función para actualizar combo de mascotas
+            function actualizarComboMascotas() {
+                $.get('/FichaIngreso/GetMascotas')
+                    .done(function(response) {
+                        if (response.success) {
+                            var select = $('#selectMascota');
+                            var valorActual = select.val();
+
+                            // Limpiar opciones excepto la primera y la de "Agregar mascota"
+                            select.find('option').not(':first').remove();
+
+                            // Agregar opción "Agregar mascota"
+                            select.append('<option value="0">Agregar mascota</option>');
+
+                            // Agregar las mascotas
+                            $.each(response.data, function(index, mascota) {
+                                select.append('<option value="' + mascota.value + '">' + mascota.text + '</option>');
+                            });
+                        }
+                    })
+                    .fail(function() {
+                        toastr.error('Error al actualizar la lista de mascotas');
+                    });
+            }
+        });
+    </script>
+}

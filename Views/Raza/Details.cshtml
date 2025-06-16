@@ -4,76 +4,142 @@
     ViewData["Title"] = "Detalles de Raza";
 }
 
-<div class="row">
-    <div class="col s12">
-        <div class="card">
-            <div class="card-content">
-                <span class="card-title">@Model.Nombre</span>
-                <div class="row">
-                    <div class="col s12">
-                        <div class="row">
-                            <div class="col s12">
-                                <h6>Especie</h6>
-                                <p>@Model.Especie.Nombre</p>
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-info text-white">
+                <h4 class="card-title mb-0">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Detalles de la Raza: @Model.Nombre
+                </h4>
+            </div>
+            <div class="card-body p-4">
+                <div class="row g-4">
+                    <!-- Información básica -->
+                    <div class="col-md-6">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary">
+                                    <i class="bi bi-tag me-2"></i>Información Básica
+                                </h5>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <strong>Nombre:</strong>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <span class="badge bg-primary fs-6">@Model.Nombre</span>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <strong>Especie:</strong>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <span class="badge bg-secondary fs-6">@Model.Especie.Nombre</span>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <strong>Estado:</strong>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        @if (Model.Activo)
+                                        {
+                                            <span class="badge bg-success fs-6">
+                                                <i class="bi bi-check-circle me-1"></i>Activo
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger fs-6">
+                                                <i class="bi bi-x-circle me-1"></i>Inactivo
+                                            </span>
+                                        }
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        @if (Model.Mascotas.Any())
-                        {
-                            <div class="row">
-                                <div class="col s12">
-                                    <h6>Mascotas de esta raza</h6>
-                                    <table class="striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Nombre</th>
-                                                <th>Dueño</th>
-                                                <th>Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var mascota in Model.Mascotas)
-                                            {
-                                                <tr>
-                                                    <td>@mascota.Nombre</td>
-                                                    <td>@mascota.Dueno.Nombre @mascota.Dueno.Apellido</td>
-                                                    <td>
-                                                        <a class="btn-floating btn-small waves-effect waves-light blue" asp-controller="Mascota" asp-action="Edit" asp-route-id="@mascota.IdMascota">
-                                                            <i class="material-icons">edit</i>
-                                                        </a>
-                                                        <a class="btn-floating btn-small waves-effect waves-light green" asp-controller="Mascota" asp-action="Details" asp-route-id="@mascota.IdMascota">
-                                                            <i class="material-icons">visibility</i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            }
-                                        </tbody>
-                                    </table>
+                    </div>
+
+                    <!-- Estadísticas -->
+                    <div class="col-md-6">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <h5 class="card-title text-success">
+                                    <i class="bi bi-bar-chart me-2"></i>Estadísticas
+                                </h5>
+                                <div class="text-center">
+                                    <div class="display-4 text-success">@Model.Mascotas.Count()</div>
+                                    <p class="text-muted">Mascotas registradas</p>
                                 </div>
                             </div>
-                        }
-                        else
-                        {
-                            <div class="row">
-                                <div class="col s12">
-                                    <p>No hay mascotas registradas de esta raza.</p>
-                                </div>
-                            </div>
-                        }
+                        </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col s12">
-                        <a class="waves-effect waves-light btn blue" asp-action="Edit" asp-route-id="@Model.IdRaza">
-                            <i class="material-icons left">edit</i>
-                            Editar
-                        </a>
-                        <a class="waves-effect waves-light btn grey" asp-action="Index">
-                            <i class="material-icons left">arrow_back</i>
-                            Volver
-                        </a>
+
+                <!-- Lista de mascotas -->
+                @if (Model.Mascotas.Any())
+                {
+                    <div class="mt-4">
+                        <h5 class="text-primary mb-3">
+                            <i class="bi bi-list me-2"></i>Mascotas de esta raza
+                        </h5>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th><i class="bi bi-tag me-1"></i>Nombre</th>
+                                        <th><i class="bi bi-person me-1"></i>Dueño</th>
+                                        <th class="text-center"><i class="bi bi-tools me-1"></i>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var mascota in Model.Mascotas)
+                                    {
+                                        <tr>
+                                            <td><strong>@mascota.Nombre</strong></td>
+                                            <td>@mascota.Dueno.Nombre @mascota.Dueno.Apellido</td>
+                                            <td class="text-center">
+                                                <div class="btn-group" role="group">
+                                                    <a class="btn btn-outline-primary btn-sm" asp-controller="Mascota" asp-action="Edit" asp-route-id="@mascota.IdMascota" title="Editar">
+                                                        <i class="bi bi-pencil-fill"></i>
+                                                    </a>
+                                                    <a class="btn btn-outline-info btn-sm" asp-controller="Mascota" asp-action="Details" asp-route-id="@mascota.IdMascota" title="Ver detalles">
+                                                        <i class="bi bi-eye-fill"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
+                }
+                else
+                {
+                    <div class="mt-4">
+                        <div class="alert alert-info text-center" role="alert">
+                            <i class="bi bi-info-circle me-2"></i>
+                            <strong>No hay mascotas registradas</strong> de esta raza aún.
+                        </div>
+                    </div>
+                }
+
+                <!-- Botones de acción -->
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                    <a class="btn btn-outline-secondary btn-lg me-md-2" asp-action="Index">
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Volver al Listado
+                    </a>
+                    <a class="btn btn-warning btn-lg" asp-action="Edit" asp-route-id="@Model.IdRaza">
+                        <i class="bi bi-pencil-square me-1"></i>
+                        Editar Raza
+                    </a>
                 </div>
             </div>
         </div>
     </div>
-</div> 
+</div>

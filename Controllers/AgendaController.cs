@@ -14,30 +14,75 @@ namespace Turnos31.Controllers
 
         public async Task<IActionResult> Index(int? idVeterinario, int? idMascota, EstadoAgenda? estado, DateTime? desde, DateTime? hasta)
         {
-            ViewBag.IdVeterinario = new SelectList(_context.Veterinarios.OrderBy(v => v.Nombre), "IdVeterinario", "Nombre", idVeterinario);
-            ViewBag.IdMascota = new SelectList(_context.Mascotas.OrderBy(m => m.Nombre), "IdMascota", "Nombre", idMascota);
-            ViewBag.Estado = new SelectList(Enum.GetValues(typeof(EstadoAgenda)).Cast<EstadoAgenda>());
-            ViewBag.Desde = desde?.ToString("yyyy-MM-dd");
-            ViewBag.Hasta = hasta?.ToString("yyyy-MM-dd");
+            try
+            {
+                // Cargar datos para los filtros de forma segura
+                var veterinarios = await _context.Veterinarios
+                    .Select(v => new { v.IdVeterinario, Nombre = v.Nombre + " " + v.Apellido })
+                    .OrderBy(v => v.Nombre)
+                    .ToListAsync();
 
-            var agendas = _context.Agendas
-                .Include(a => a.Mascota)
-                    .ThenInclude(m => m.Dueno)
-                .Include(a => a.Veterinario)
-                .AsQueryable();
+                var mascotas = await _context.Mascotas
+                    .Select(m => new { m.IdMascota, m.Nombre })
+                    .OrderBy(m => m.Nombre)
+                    .ToListAsync();
 
-            if (idVeterinario.HasValue)
-                agendas = agendas.Where(a => a.IdVeterinario == idVeterinario.Value);
-            if (idMascota.HasValue)
-                agendas = agendas.Where(a => a.IdMascota == idMascota.Value);
-            if (estado.HasValue)
-                agendas = agendas.Where(a => a.Estado == estado.Value);
-            if (desde.HasValue)
-                agendas = agendas.Where(a => a.FechaHoraInicio >= desde.Value);
-            if (hasta.HasValue)
-                agendas = agendas.Where(a => a.FechaHoraFin <= hasta.Value.AddDays(1));
+                ViewBag.IdVeterinario = new SelectList(veterinarios, "IdVeterinario", "Nombre", idVeterinario);
+                ViewBag.IdMascota = new SelectList(mascotas, "IdMascota", "Nombre", idMascota);
+                ViewBag.Estado = new SelectList(Enum.GetValues(typeof(EstadoAgenda)).Cast<EstadoAgenda>());
+                ViewBag.Desde = desde?.ToString("yyyy-MM-dd");
+                ViewBag.Hasta = hasta?.ToString("yyyy-MM-dd");
 
-            return View(await agendas.OrderByDescending(a => a.FechaHoraInicio).ToListAsync());
+                // Consulta básica sin Include problemáticos
+                var agendasQuery = _context.Agendas.AsQueryable();
+
+                if (idVeterinario.HasValue)
+                    agendasQuery = agendasQuery.Where(a => a.IdVeterinario == idVeterinario.Value);
+                if (idMascota.HasValue)
+                    agendasQuery = agendasQuery.Where(a => a.IdMascota == idMascota.Value);
+                if (estado.HasValue)
+                    agendasQuery = agendasQuery.Where(a => a.Estado == estado.Value);
+                if (desde.HasValue)
+                    agendasQuery = agendasQuery.Where(a => a.FechaHoraInicio >= desde.Value);
+                if (hasta.HasValue)
+                    agendasQuery = agendasQuery.Where(a => a.FechaHoraFin <= hasta.Value.AddDays(1));
+
+                var agendas = await agendasQuery.OrderByDescending(a => a.FechaHoraInicio).ToListAsync();
+
+                // Cargar relaciones por separado para evitar problemas
+                foreach (var agenda in agendas)
+                {
+                    await _context.Entry(agenda)
+                        .Reference(a => a.Mascota)
+                        .LoadAsync();
+
+                    await _context.Entry(agenda)
+                        .Reference(a => a.Veterinario)
+                        .LoadAsync();
+
+                    if (agenda.Mascota != null)
+                    {
+                        await _context.Entry(agenda.Mascota)
+                            .Reference(m => m.Dueno)
+                            .LoadAsync();
+                    }
+                }
+
+                return View(agendas);
+            }
+            catch (Exception ex)
+            {
+                // Log del error
+                Console.WriteLine($"Error en Agenda Index: {ex.Message}");
+                ViewBag.ErrorMessage = $"Error al cargar las agendas: {ex.Message}";
+
+                // Retornar vista vacía en caso de error
+                ViewBag.IdVeterinario = new SelectList(new List<object>(), "IdVeterinario", "Nombre");
+                ViewBag.IdMascota = new SelectList(new List<object>(), "IdMascota", "Nombre");
+                ViewBag.Estado = new SelectList(Enum.GetValues(typeof(EstadoAgenda)).Cast<EstadoAgenda>());
+
+                return View(new List<Agenda>());
+            }
         }
 
         public JsonResult ObtenerAgendas(int IdVeterinario)
@@ -116,30 +161,54 @@ namespace Turnos31.Controllers
             return Json(new { ok, mensaje });
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var viewModel = new AgendaCreateViewModel
+            try
             {
-                Agenda = new Agenda(),
-                Mascotas = new SelectList(_context.Mascotas
-                    .Include(m => m.Dueno)
-                    .OrderBy(m => m.Nombre)
+                // Cargar mascotas con información básica (sin Especie por ahora)
+                var mascotas = await _context.Mascotas
                     .Select(m => new
                     {
                         IdMascota = m.IdMascota,
-                        Nombre = $"{m.Nombre} - {m.Dueno.Nombre} ({m.Especie.Nombre})"
-                    }), "IdMascota", "Nombre"),
-                Veterinarios = new SelectList(_context.Veterinarios
-                    .OrderBy(v => v.Nombre)
+                        Nombre = m.Nombre + " - " + m.Dueno.Nombre
+                    })
+                    .OrderBy(m => m.Nombre)
+                    .ToListAsync();
+
+                var veterinarios = await _context.Veterinarios
                     .Select(v => new
                     {
                         IdVeterinario = v.IdVeterinario,
-                        Nombre = $"{v.Nombre} {v.Apellido}"
-                    }), "IdVeterinario", "Nombre"),
-                TiposConsulta = new SelectList(Enum.GetValues(typeof(TipoConsulta)))
-            };
+                        Nombre = v.Nombre + " " + v.Apellido
+                    })
+                    .OrderBy(v => v.Nombre)
+                    .ToListAsync();
 
-            return View(viewModel);
+                var viewModel = new AgendaCreateViewModel
+                {
+                    Agenda = new Agenda(),
+                    Mascotas = new SelectList(mascotas, "IdMascota", "Nombre"),
+                    Veterinarios = new SelectList(veterinarios, "IdVeterinario", "Nombre"),
+                    TiposConsulta = new SelectList(Enum.GetValues(typeof(TipoConsulta)))
+                };
+
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en Create: {ex.Message}");
+
+                var viewModel = new AgendaCreateViewModel
+                {
+                    Agenda = new Agenda(),
+                    Mascotas = new SelectList(new List<object>(), "IdMascota", "Nombre"),
+                    Veterinarios = new SelectList(new List<object>(), "IdVeterinario", "Nombre"),
+                    TiposConsulta = new SelectList(Enum.GetValues(typeof(TipoConsulta)))
+                };
+
+                ViewBag.ErrorMessage = $"Error al cargar los datos: {ex.Message}";
+                return View(viewModel);
+            }
         }
 
         [HttpPost]
@@ -169,22 +238,26 @@ namespace Turnos31.Controllers
             }
 
             // Recargar las listas de selección
-            viewModel.Mascotas = new SelectList(_context.Mascotas
-                .Include(m => m.Dueno)
-                .OrderBy(m => m.Nombre)
+            var mascotas = await _context.Mascotas
                 .Select(m => new
                 {
                     IdMascota = m.IdMascota,
-                    Nombre = $"{m.Nombre} - {m.Dueno.Nombre} ({m.Especie.Nombre})"
-                }), "IdMascota", "Nombre");
+                    Nombre = m.Nombre + " - " + m.Dueno.Nombre
+                })
+                .OrderBy(m => m.Nombre)
+                .ToListAsync();
 
-            viewModel.Veterinarios = new SelectList(_context.Veterinarios
-                .OrderBy(v => v.Nombre)
+            var veterinarios = await _context.Veterinarios
                 .Select(v => new
                 {
                     IdVeterinario = v.IdVeterinario,
-                    Nombre = $"{v.Nombre} {v.Apellido}"
-                }), "IdVeterinario", "Nombre");
+                    Nombre = v.Nombre + " " + v.Apellido
+                })
+                .OrderBy(v => v.Nombre)
+                .ToListAsync();
+
+            viewModel.Mascotas = new SelectList(mascotas, "IdMascota", "Nombre");
+            viewModel.Veterinarios = new SelectList(veterinarios, "IdVeterinario", "Nombre");
 
             viewModel.TiposConsulta = new SelectList(Enum.GetValues(typeof(TipoConsulta)));
 

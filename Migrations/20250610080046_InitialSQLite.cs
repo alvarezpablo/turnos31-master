@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Turnos31.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialSQLite : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -14,9 +15,9 @@ namespace Turnos31.Migrations
                 name: "Categorias",
                 columns: table => new
                 {
-                    IdCategoria = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    IdCategoria = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Nombre = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -27,8 +28,8 @@ namespace Turnos31.Migrations
                 name: "Duenos",
                 columns: table => new
                 {
-                    IdDueno = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdDueno = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Nombre = table.Column<string>(type: "varchar(100)", nullable: false),
                     Apellido = table.Column<string>(type: "varchar(100)", nullable: false),
                     Direccion = table.Column<string>(type: "varchar(200)", nullable: false),
@@ -45,8 +46,8 @@ namespace Turnos31.Migrations
                 name: "Especialidades",
                 columns: table => new
                 {
-                    IdEspecialidad = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdEspecialidad = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Descripcion = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
                 },
                 constraints: table =>
@@ -58,8 +59,8 @@ namespace Turnos31.Migrations
                 name: "Especies",
                 columns: table => new
                 {
-                    IdEspecie = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdEspecie = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Nombre = table.Column<string>(type: "varchar(100)", nullable: false)
                 },
                 constraints: table =>
@@ -71,11 +72,11 @@ namespace Turnos31.Migrations
                 name: "Login",
                 columns: table => new
                 {
-                    LoginId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Usuario = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Rol = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    LoginId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Usuario = table.Column<string>(type: "TEXT", nullable: false),
+                    Password = table.Column<string>(type: "TEXT", nullable: false),
+                    Rol = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -83,12 +84,34 @@ namespace Turnos31.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Menus",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Nombre = table.Column<string>(type: "TEXT", nullable: true),
+                    Url = table.Column<string>(type: "TEXT", nullable: true),
+                    Icono = table.Column<string>(type: "TEXT", nullable: true),
+                    MenuPadreId = table.Column<int>(type: "INTEGER", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Menus", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Menus_Menus_MenuPadreId",
+                        column: x => x.MenuPadreId,
+                        principalTable: "Menus",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MotivoVisitas",
                 columns: table => new
                 {
-                    IdMotivoVisita = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    IdMotivoVisita = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Nombre = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -99,9 +122,9 @@ namespace Turnos31.Migrations
                 name: "NivelUrgencias",
                 columns: table => new
                 {
-                    IdNivelUrgencia = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    IdNivelUrgencia = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Nombre = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -109,12 +132,26 @@ namespace Turnos31.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Roles",
+                columns: table => new
+                {
+                    IdRol = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    NombreRol = table.Column<string>(type: "TEXT", nullable: true),
+                    Descripcion = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.IdRol);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TipoServicios",
                 columns: table => new
                 {
-                    IdTipoServicio = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    IdTipoServicio = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Nombre = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -122,36 +159,18 @@ namespace Turnos31.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Usuarios",
-                columns: table => new
-                {
-                    IdUsuario = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "varchar(100)", nullable: false),
-                    Apellido = table.Column<string>(type: "varchar(100)", nullable: false),
-                    Email = table.Column<string>(type: "varchar(100)", nullable: false),
-                    Password = table.Column<string>(type: "varchar(100)", nullable: false),
-                    Rol = table.Column<string>(type: "varchar(20)", nullable: false),
-                    Activo = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Usuarios", x => x.IdUsuario);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Veterinarios",
                 columns: table => new
                 {
-                    IdVeterinario = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdVeterinario = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Nombre = table.Column<string>(type: "varchar(100)", nullable: false),
                     Apellido = table.Column<string>(type: "varchar(100)", nullable: false),
                     Direccion = table.Column<string>(type: "varchar(200)", nullable: false),
                     Telefono = table.Column<string>(type: "varchar(20)", nullable: false),
                     Email = table.Column<string>(type: "varchar(100)", nullable: false),
-                    HorarioAtencionDesde = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    HorarioAtencionHasta = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    HorarioAtencionDesde = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    HorarioAtencionHasta = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -162,17 +181,17 @@ namespace Turnos31.Migrations
                 name: "Productos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Nombre = table.Column<string>(type: "varchar(MAX)", nullable: false),
                     Costo = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Precio = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Stock = table.Column<int>(type: "int", nullable: false),
+                    Stock = table.Column<int>(type: "INTEGER", nullable: false),
                     Proveedor = table.Column<string>(type: "varchar(MAX)", nullable: true),
                     EstadoProducto = table.Column<string>(type: "varchar(MAX)", nullable: true),
-                    CategoriaId = table.Column<int>(type: "int", nullable: false),
+                    CategoriaId = table.Column<int>(type: "INTEGER", nullable: false),
                     Foto = table.Column<string>(type: "varchar(MAX)", nullable: true),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    Status = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -188,10 +207,11 @@ namespace Turnos31.Migrations
                 name: "Razas",
                 columns: table => new
                 {
-                    IdRaza = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdRaza = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Nombre = table.Column<string>(type: "varchar(100)", nullable: false),
-                    IdEspecie = table.Column<int>(type: "int", nullable: false)
+                    IdEspecie = table.Column<int>(type: "INTEGER", nullable: false),
+                    Activo = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -205,14 +225,88 @@ namespace Turnos31.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MenuRoles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    MenuId = table.Column<int>(type: "INTEGER", nullable: false),
+                    RolId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MenuRoles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MenuRoles_Menus_MenuId",
+                        column: x => x.MenuId,
+                        principalTable: "Menus",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MenuRoles_Roles_RolId",
+                        column: x => x.RolId,
+                        principalTable: "Roles",
+                        principalColumn: "IdRol",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Usuarios",
+                columns: table => new
+                {
+                    IdUsuario = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Nombre = table.Column<string>(type: "varchar(100)", nullable: false),
+                    Apellido = table.Column<string>(type: "varchar(100)", nullable: false),
+                    Email = table.Column<string>(type: "varchar(100)", nullable: false),
+                    Password = table.Column<string>(type: "varchar(100)", nullable: false),
+                    IdRol = table.Column<int>(type: "INTEGER", nullable: false),
+                    Activo = table.Column<bool>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Usuarios", x => x.IdUsuario);
+                    table.ForeignKey(
+                        name: "FK_Usuarios_Roles_IdRol",
+                        column: x => x.IdRol,
+                        principalTable: "Roles",
+                        principalColumn: "IdRol",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Turnos",
+                columns: table => new
+                {
+                    IdTurno = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    IdVeterinario = table.Column<int>(type: "INTEGER", nullable: false),
+                    DiaSemana = table.Column<int>(type: "INTEGER", nullable: false),
+                    HoraInicio = table.Column<TimeSpan>(type: "TEXT", nullable: false),
+                    HoraFin = table.Column<TimeSpan>(type: "TEXT", nullable: false),
+                    DuracionConsulta = table.Column<int>(type: "INTEGER", nullable: false),
+                    Activo = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Observaciones = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Turnos", x => x.IdTurno);
+                    table.ForeignKey(
+                        name: "FK_Turnos_Veterinarios_IdVeterinario",
+                        column: x => x.IdVeterinario,
+                        principalTable: "Veterinarios",
+                        principalColumn: "IdVeterinario");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "VeterinariosEspecialidades",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IdVeterinario = table.Column<int>(type: "int", nullable: false),
-                    IdEspecialidad = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    IdVeterinario = table.Column<int>(type: "INTEGER", nullable: false),
+                    IdEspecialidad = table.Column<int>(type: "INTEGER", nullable: false),
+                    Status = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -233,18 +327,21 @@ namespace Turnos31.Migrations
                 name: "Mascotas",
                 columns: table => new
                 {
-                    IdMascota = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    IdEspecie = table.Column<int>(type: "int", nullable: false),
-                    IdRaza = table.Column<int>(type: "int", nullable: false),
-                    FechaNacimiento = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IdMascota = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Nombre = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    IdEspecie = table.Column<int>(type: "INTEGER", nullable: false),
+                    IdRaza = table.Column<int>(type: "INTEGER", nullable: false),
+                    FechaNacimiento = table.Column<DateTime>(type: "TEXT", nullable: true),
                     Sexo = table.Column<string>(type: "nvarchar(1)", nullable: false),
-                    Color = table.Column<string>(type: "varchar(MAX)", nullable: true),
+                    Color = table.Column<string>(type: "TEXT", nullable: true),
+                    NumeroMicrochip = table.Column<string>(type: "TEXT", maxLength: 25, nullable: true),
+                    Peso = table.Column<decimal>(type: "decimal(5,2)", nullable: true),
+                    Tamaño = table.Column<string>(type: "varchar(20)", nullable: true),
                     Pelaje = table.Column<string>(type: "varchar(MAX)", nullable: true),
                     Alergia = table.Column<string>(type: "varchar(MAX)", nullable: true),
                     Observaciones = table.Column<string>(type: "varchar(MAX)", nullable: true),
-                    IdDueno = table.Column<int>(type: "int", nullable: false)
+                    IdDueno = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -267,20 +364,57 @@ namespace Turnos31.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Agendas",
+                columns: table => new
+                {
+                    IdAgenda = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    IdMascota = table.Column<int>(type: "INTEGER", nullable: false),
+                    IdVeterinario = table.Column<int>(type: "INTEGER", nullable: false),
+                    FechaHoraInicio = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    FechaHoraFin = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Estado = table.Column<int>(type: "INTEGER", nullable: false),
+                    Descripcion = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
+                    Observaciones = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
+                    FechaReserva = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    TipoConsulta = table.Column<string>(type: "TEXT", nullable: false),
+                    MotivoVisita = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
+                    EsUrgente = table.Column<bool>(type: "INTEGER", nullable: false),
+                    MascotaIdMascota = table.Column<int>(type: "INTEGER", nullable: false),
+                    VeterinarioIdVeterinario = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Agendas", x => x.IdAgenda);
+                    table.ForeignKey(
+                        name: "FK_Agendas_Mascotas_MascotaIdMascota",
+                        column: x => x.MascotaIdMascota,
+                        principalTable: "Mascotas",
+                        principalColumn: "IdMascota",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Agendas_Veterinarios_VeterinarioIdVeterinario",
+                        column: x => x.VeterinarioIdVeterinario,
+                        principalTable: "Veterinarios",
+                        principalColumn: "IdVeterinario",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "FichasIngreso",
                 columns: table => new
                 {
-                    IdFichaIngreso = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IdDueno = table.Column<int>(type: "int", nullable: false),
-                    IdMascota = table.Column<int>(type: "int", nullable: false),
-                    FechaHoraIngreso = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IdNivelUrgencia = table.Column<int>(type: "int", nullable: false),
-                    IdMotivoVisita = table.Column<int>(type: "int", nullable: false),
-                    IdTipoServicio = table.Column<int>(type: "int", nullable: false),
-                    Observaciones = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    Estado = table.Column<int>(type: "int", nullable: false),
-                    FechaActualizacion = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    IdFichaIngreso = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    IdDueno = table.Column<int>(type: "INTEGER", nullable: false),
+                    IdMascota = table.Column<int>(type: "INTEGER", nullable: false),
+                    FechaHoraIngreso = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    IdNivelUrgencia = table.Column<int>(type: "INTEGER", nullable: false),
+                    IdMotivoVisita = table.Column<int>(type: "INTEGER", nullable: false),
+                    IdTipoServicio = table.Column<int>(type: "INTEGER", nullable: false),
+                    Observaciones = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
+                    Estado = table.Column<int>(type: "INTEGER", nullable: false),
+                    FechaActualizacion = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -318,69 +452,37 @@ namespace Turnos31.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Turnos",
-                columns: table => new
-                {
-                    IdTurno = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IdMascota = table.Column<int>(type: "int", nullable: false),
-                    IdVeterinario = table.Column<int>(type: "int", nullable: false),
-                    FechaHoraInicio = table.Column<DateTime>(type: "datetime", nullable: false),
-                    FechaHoraFin = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Descripcion = table.Column<string>(type: "varchar(MAX)", nullable: true),
-                    FechaReserva = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Estado = table.Column<int>(type: "int", nullable: false),
-                    Observaciones = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Turnos", x => x.IdTurno);
-                    table.ForeignKey(
-                        name: "FK_Turnos_Mascotas_IdMascota",
-                        column: x => x.IdMascota,
-                        principalTable: "Mascotas",
-                        principalColumn: "IdMascota",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Turnos_Veterinarios_IdVeterinario",
-                        column: x => x.IdVeterinario,
-                        principalTable: "Veterinarios",
-                        principalColumn: "IdVeterinario",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Consultas",
                 columns: table => new
                 {
-                    IdConsulta = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IdTurno = table.Column<int>(type: "int", nullable: false),
-                    FechaHora = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Motivo = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    Diagnostico = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
-                    Tratamiento = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    Observaciones = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
+                    IdConsulta = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    IdAgenda = table.Column<int>(type: "INTEGER", nullable: false),
+                    Motivo = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
+                    Diagnostico = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: false),
+                    Tratamiento = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
+                    Observaciones = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
+                    FechaHora = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Peso = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: true),
                     Temperatura = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: true),
                     FrecuenciaCardiaca = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: true),
                     FrecuenciaRespiratoria = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: true),
-                    MascotaIdMascota = table.Column<int>(type: "int", nullable: true),
-                    VeterinarioIdVeterinario = table.Column<int>(type: "int", nullable: true)
+                    MascotaIdMascota = table.Column<int>(type: "INTEGER", nullable: true),
+                    VeterinarioIdVeterinario = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Consultas", x => x.IdConsulta);
                     table.ForeignKey(
+                        name: "FK_Consultas_Agendas_IdAgenda",
+                        column: x => x.IdAgenda,
+                        principalTable: "Agendas",
+                        principalColumn: "IdAgenda");
+                    table.ForeignKey(
                         name: "FK_Consultas_Mascotas_MascotaIdMascota",
                         column: x => x.MascotaIdMascota,
                         principalTable: "Mascotas",
                         principalColumn: "IdMascota");
-                    table.ForeignKey(
-                        name: "FK_Consultas_Turnos_IdTurno",
-                        column: x => x.IdTurno,
-                        principalTable: "Turnos",
-                        principalColumn: "IdTurno");
                     table.ForeignKey(
                         name: "FK_Consultas_Veterinarios_VeterinarioIdVeterinario",
                         column: x => x.VeterinarioIdVeterinario,
@@ -392,12 +494,12 @@ namespace Turnos31.Migrations
                 name: "Diagnosticos",
                 columns: table => new
                 {
-                    IdDiagnostico = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdDiagnostico = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Detalle = table.Column<string>(type: "varchar(MAX)", nullable: true),
                     FechaDiagnostico = table.Column<DateTime>(type: "date", nullable: true),
-                    IdConsulta = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    IdConsulta = table.Column<int>(type: "INTEGER", nullable: false),
+                    Status = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -413,8 +515,8 @@ namespace Turnos31.Migrations
                 name: "Examenes",
                 columns: table => new
                 {
-                    IdExamen = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdExamen = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Mucosa = table.Column<string>(type: "varchar(MAX)", nullable: true),
                     Piel = table.Column<string>(type: "varchar(MAX)", nullable: true),
                     Conjuntival = table.Column<string>(type: "varchar(MAX)", nullable: true),
@@ -428,10 +530,10 @@ namespace Turnos31.Migrations
                     SistemaRespiratorio = table.Column<string>(type: "varchar(MAX)", nullable: true),
                     SistemaDigestivo = table.Column<string>(type: "varchar(MAX)", nullable: true),
                     SistemaUrinario = table.Column<string>(type: "varchar(MAX)", nullable: true),
-                    IdConsulta = table.Column<int>(type: "int", nullable: false),
-                    IdMascota = table.Column<int>(type: "int", nullable: false),
-                    IdVeterinario = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    IdConsulta = table.Column<int>(type: "INTEGER", nullable: false),
+                    IdMascota = table.Column<int>(type: "INTEGER", nullable: false),
+                    IdVeterinario = table.Column<int>(type: "INTEGER", nullable: false),
+                    Status = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -458,11 +560,11 @@ namespace Turnos31.Migrations
                 name: "Tratamientos",
                 columns: table => new
                 {
-                    IdTratamiento = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdTratamiento = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Detalle = table.Column<string>(type: "varchar(MAX)", nullable: true),
-                    IdConsulta = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    IdConsulta = table.Column<int>(type: "INTEGER", nullable: false),
+                    Status = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -478,10 +580,10 @@ namespace Turnos31.Migrations
                 name: "ResultadosExamenes",
                 columns: table => new
                 {
-                    IdResultado = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IdConsulta = table.Column<int>(type: "int", nullable: false),
-                    IdExamen = table.Column<int>(type: "int", nullable: false),
+                    IdResultado = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    IdConsulta = table.Column<int>(type: "INTEGER", nullable: false),
+                    IdExamen = table.Column<int>(type: "INTEGER", nullable: false),
                     Resultado = table.Column<string>(type: "varchar(MAX)", nullable: false),
                     FechaRealizacion = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
@@ -505,11 +607,11 @@ namespace Turnos31.Migrations
                 name: "ProductosTratamientos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IdTratamiento = table.Column<int>(type: "int", nullable: false),
-                    IdProducto = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    IdTratamiento = table.Column<int>(type: "INTEGER", nullable: false),
+                    IdProducto = table.Column<int>(type: "INTEGER", nullable: false),
+                    Status = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -527,9 +629,19 @@ namespace Turnos31.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Consultas_IdTurno",
+                name: "IX_Agendas_MascotaIdMascota",
+                table: "Agendas",
+                column: "MascotaIdMascota");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Agendas_VeterinarioIdVeterinario",
+                table: "Agendas",
+                column: "VeterinarioIdVeterinario");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Consultas_IdAgenda",
                 table: "Consultas",
-                column: "IdTurno");
+                column: "IdAgenda");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Consultas_MascotaIdMascota",
@@ -602,6 +714,21 @@ namespace Turnos31.Migrations
                 column: "IdRaza");
 
             migrationBuilder.CreateIndex(
+                name: "IX_MenuRoles_MenuId",
+                table: "MenuRoles",
+                column: "MenuId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MenuRoles_RolId",
+                table: "MenuRoles",
+                column: "RolId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Menus_MenuPadreId",
+                table: "Menus",
+                column: "MenuPadreId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Productos_CategoriaId",
                 table: "Productos",
                 column: "CategoriaId");
@@ -637,11 +764,6 @@ namespace Turnos31.Migrations
                 column: "IdConsulta");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Turnos_IdMascota",
-                table: "Turnos",
-                column: "IdMascota");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Turnos_IdVeterinario",
                 table: "Turnos",
                 column: "IdVeterinario");
@@ -651,6 +773,11 @@ namespace Turnos31.Migrations
                 table: "Usuarios",
                 column: "Email",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuarios_IdRol",
+                table: "Usuarios",
+                column: "IdRol");
 
             migrationBuilder.CreateIndex(
                 name: "IX_VeterinariosEspecialidades_IdEspecialidad",
@@ -676,10 +803,16 @@ namespace Turnos31.Migrations
                 name: "Login");
 
             migrationBuilder.DropTable(
+                name: "MenuRoles");
+
+            migrationBuilder.DropTable(
                 name: "ProductosTratamientos");
 
             migrationBuilder.DropTable(
                 name: "ResultadosExamenes");
+
+            migrationBuilder.DropTable(
+                name: "Turnos");
 
             migrationBuilder.DropTable(
                 name: "Usuarios");
@@ -697,6 +830,9 @@ namespace Turnos31.Migrations
                 name: "TipoServicios");
 
             migrationBuilder.DropTable(
+                name: "Menus");
+
+            migrationBuilder.DropTable(
                 name: "Productos");
 
             migrationBuilder.DropTable(
@@ -704,6 +840,9 @@ namespace Turnos31.Migrations
 
             migrationBuilder.DropTable(
                 name: "Examenes");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Especialidades");
@@ -715,7 +854,7 @@ namespace Turnos31.Migrations
                 name: "Consultas");
 
             migrationBuilder.DropTable(
-                name: "Turnos");
+                name: "Agendas");
 
             migrationBuilder.DropTable(
                 name: "Mascotas");

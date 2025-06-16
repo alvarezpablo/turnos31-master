@@ -29,7 +29,7 @@ namespace Turnos31.Controllers
                 menuRoles = menuRoles.Where(mr => mr.RolId == rolId.Value);
             }
 
-            return View(await menuRoles.OrderBy(mr => mr.Menu.Nombre).ToListAsync());
+            return View(await menuRoles.OrderBy(mr => mr.Menu != null ? mr.Menu.Nombre : "").ToListAsync());
         }
 
         // GET: MenuRol/Create

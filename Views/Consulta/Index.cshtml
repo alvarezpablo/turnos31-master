@@ -4,6 +4,14 @@
     ViewData["Title"] = "Consultas Veterinarias";
 }
 
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        <h4>Error al cargar las consultas:</h4>
+        <p>@ViewBag.ErrorMessage</p>
+    </div>
+}
+
 <div class="container-fluid">
     <div class="row mb-4">
         <div class="col-12">
@@ -54,11 +62,9 @@
                                 {
                                     <tr>
                                         <td>@item.FechaHora.ToString("g")</td>
-                                        <td>@item.Agenda?.Mascota?.Nombre</td>
-                                        <td>@item.Agenda?.Mascota?.Dueno?.Nombre 
-                                             @item.Agenda?.Mascota?.Dueno?.Apellido
-                                        </td>
-                                        <td>@item.Agenda?.Veterinario?.NombreCompleto</td>
+                                        <td>Agenda ID: @item.IdAgenda</td>
+                                        <td>-</td>
+                                        <td>-</td>
                                         <td>@item.Motivo</td>
                                         <td>
                                             <div class="btn-group" role="group">

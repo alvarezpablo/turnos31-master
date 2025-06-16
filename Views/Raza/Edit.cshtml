@@ -4,41 +4,63 @@
     ViewData["Title"] = "Editar Raza";
 }
 
-<div class="row">
-    <div class="col s12">
-        <div class="card">
-            <div class="card-content">
-                <span class="card-title">Editar Raza</span>
-                <form asp-action="Edit">
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="/Raza" class="text-decoration-none">Razas</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Editar Raza</li>
+    </ol>
+</nav>
+
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-warning text-dark">
+                <h4 class="card-title mb-0">
+                    <i class="bi bi-pencil-square me-2"></i>
+                    Editar Raza
+                </h4>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="Edit" method="post" class="needs-validation" novalidate>
                     <input type="hidden" asp-for="IdRaza" />
-                    <div class="row">
-                        <div asp-validation-summary="ModelOnly" class="red-text"></div>
-                        <div class="input-field col s12">
-                            <i class="material-icons prefix">pets</i>
-                            <input asp-for="Nombre" class="validate" />
-                            <label asp-for="Nombre"></label>
-                            <span asp-validation-for="Nombre" class="red-text"></span>
+                    <input type="hidden" asp-for="Activo" />
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <div class="form-floating mb-3">
+                                <input asp-for="Nombre" class="form-control" placeholder="Nombre de la raza" required />
+                                <label asp-for="Nombre" class="form-label">
+                                    <i class="bi bi-tag me-1"></i>Nombre de la Raza
+                                </label>
+                                <span asp-validation-for="Nombre" class="invalid-feedback"></span>
+                            </div>
                         </div>
-                        <div class="input-field col s12">
-                            <i class="material-icons prefix">category</i>
-                            <select asp-for="IdEspecie" asp-items="ViewBag.IdEspecie" class="validate">
-                                <option value="" disabled>Seleccione una especie</option>
-                            </select>
-                            <label>Especie</label>
-                            <span asp-validation-for="IdEspecie" class="red-text"></span>
+
+                        <div class="col-12">
+                            <div class="form-floating mb-3">
+                                <select asp-for="IdEspecie" asp-items="ViewBag.IdEspecie" class="form-select" required>
+                                    <option value="" disabled>Seleccione una especie</option>
+                                </select>
+                                <label asp-for="IdEspecie" class="form-label">
+                                    <i class="bi bi-collection me-1"></i>Especie
+                                </label>
+                                <span asp-validation-for="IdEspecie" class="invalid-feedback"></span>
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col s12">
-                            <button class="btn waves-effect waves-light blue" type="submit">
-                                <i class="material-icons left">save</i>
-                                Guardar Cambios
-                            </button>
-                            <a class="waves-effect waves-light btn grey" asp-action="Index">
-                                <i class="material-icons left">arrow_back</i>
-                                Volver
-                            </a>
-                        </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <a class="btn btn-outline-secondary btn-lg me-md-2" asp-action="Index">
+                            <i class="bi bi-arrow-left me-1"></i>
+                            Cancelar
+                        </a>
+                        <button class="btn btn-warning btn-lg" type="submit">
+                            <i class="bi bi-check-circle me-1"></i>
+                            Guardar Cambios
+                        </button>
                     </div>
                 </form>
             </div>
@@ -49,8 +71,21 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
-        $(document).ready(function(){
-            $('select').formSelect();
-        });
+        // Bootstrap form validation
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
     </script>
-} 
+}

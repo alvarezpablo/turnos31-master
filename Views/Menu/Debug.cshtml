@@ -1,0 +1,71 @@
+@{
+    ViewData["Title"] = "Diagnóstico de Menús";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Diagnóstico de Menús - Especies y Razas</h4>
+                    <small class="text-muted">Esta página ayuda a diagnosticar por qué no aparecen los menús</small>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button id="btnDiagnostico" class="btn btn-primary">Ejecutar Diagnóstico</button>
+                            <button id="btnGetMenu" class="btn btn-info">Probar GetMenu</button>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <h5>Información de Sesión:</h5>
+                        <ul>
+                            <li><strong>Usuario ID:</strong> @Context.Session.GetString("UsuarioId")</li>
+                            <li><strong>Usuario Nombre:</strong> @Context.Session.GetString("UsuarioNombre")</li>
+                            <li><strong>Usuario Rol:</strong> @Context.Session.GetString("UsuarioRol")</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <h5>Resultados del Diagnóstico:</h5>
+                        <pre id="resultados" class="bg-light p-3" style="max-height: 500px; overflow-y: auto;">
+Haz clic en "Ejecutar Diagnóstico" para ver los resultados...
+                        </pre>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <h5>Resultado de GetMenu:</h5>
+                        <pre id="resultadosGetMenu" class="bg-light p-3" style="max-height: 500px; overflow-y: auto;">
+Haz clic en "Probar GetMenu" para ver los resultados...
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('btnDiagnostico').addEventListener('click', function() {
+    fetch('/Menu/DebugMenus')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('resultados').textContent = JSON.stringify(data, null, 2);
+        })
+        .catch(error => {
+            document.getElementById('resultados').textContent = 'Error: ' + error.message;
+        });
+});
+
+document.getElementById('btnGetMenu').addEventListener('click', function() {
+    fetch('/Menu/GetMenu')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('resultadosGetMenu').textContent = JSON.stringify(data, null, 2);
+        })
+        .catch(error => {
+            document.getElementById('resultadosGetMenu').textContent = 'Error: ' + error.message;
+        });
+});
+</script>

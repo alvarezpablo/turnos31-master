@@ -1,54 +1,204 @@
 @model IEnumerable<Turnos31.Models.Raza>
 
 @{
-    ViewData["Title"] = "Razas";
+    ViewData["Title"] = "Gestión de Razas";
 }
 
- <div class="container py-4">
-    <div class="card shadow rounded-4 border-0">
-        <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h4 class="fw-bold text-primary mb-0">
-                    <i class="bi bi-people-fill me-2"></i>Dueños de Mascotas
-                </h4>
-                <a class="btn btn-success btn-lg rounded-pill px-4" asp-action="Create">
-                    <i class="bi bi-plus-circle me-2"></i>Nuevo Dueño
-                </a>
-            </div>
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Inicio</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Razas</li>
+    </ol>
+</nav>
 
-            <div class="table-responsive">
-                <table class="table table-hover align-middle">
-                    <thead class="table-primary text-center">   
-                        <tr>
-                            <th>@Html.DisplayNameFor(model => model.Nombre)</th>
-                            <th>Especie</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
-                                <td>@Html.DisplayFor(modelItem => item.Especie.Nombre)</td>
-                                <td>
-                                     <div class="btn-group" role="group">
-                                        <a class="btn btn-sm btn-outline-primary rounded-pill" asp-action="Edit" asp-route-id="@item.IdRaza" title="Editar">
-                                            <i class="bi bi-pencil-fill"></i>
-                                        </a>
-                                        <a class="btn btn-sm btn-outline-info rounded-pill" asp-action="Details" asp-route-id="@item.IdRaza" title="Ver detalles">
-                                            <i class="bi bi-eye-fill"></i>
-                                        </a>
-                                        <a class="btn btn-sm btn-outline-danger rounded-pill" asp-action="Delete" asp-route-id="@item.IdRaza" title="Eliminar">
-                                            <i class="bi bi-trash-fill"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-lg border-0 fade-in">
+            <div class="card-header bg-info text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="card-title mb-0">
+                        <i class="bi bi-list-ul me-2"></i>
+                        Gestión de Razas
+                    </h4>
+                    <a class="btn btn-light btn-lg" asp-action="Create">
+                        <i class="bi bi-plus-circle me-1"></i>
+                        Nueva Raza
+                    </a>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                @if (Model.Any())
+                {
+                    <!-- Barra de búsqueda y filtros -->
+                    <div class="p-3 bg-light border-bottom">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="bi bi-search"></i>
+                                    </span>
+                                    <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nombre de raza...">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <select id="especieFilter" class="form-select">
+                                    <option value="">Todas las especies</option>
+                                    @foreach (var especie in Model.Select(r => r.Especie).Distinct().OrderBy(e => e.Nombre))
+                                    {
+                                        <option value="@especie.Nombre">@especie.Nombre</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" id="clearFilters" class="btn btn-outline-secondary w-100">
+                                    <i class="bi bi-x-circle me-1"></i>Limpiar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th class="px-4 py-3">
+                                        <i class="bi bi-tag me-1"></i>
+                                        @Html.DisplayNameFor(model => model.Nombre)
+                                    </th>
+                                    <th class="px-4 py-3">
+                                        <i class="bi bi-collection me-1"></i>
+                                        Especie
+                                    </th>
+                                    <th class="px-4 py-3">
+                                        <i class="bi bi-gear me-1"></i>
+                                        Estado
+                                    </th>
+                                    <th class="px-4 py-3 text-center">
+                                        <i class="bi bi-tools me-1"></i>
+                                        Acciones
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr class="align-middle">
+                                        <td class="px-4 py-3">
+                                            <strong>@Html.DisplayFor(modelItem => item.Nombre)</strong>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            <span class="badge bg-secondary fs-6">
+                                                @Html.DisplayFor(modelItem => item.Especie.Nombre)
+                                            </span>
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            @if (item.Activo)
+                                            {
+                                                <span class="badge bg-success fs-6">
+                                                    <i class="bi bi-check-circle me-1"></i>Activo
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-danger fs-6">
+                                                    <i class="bi bi-x-circle me-1"></i>Inactivo
+                                                </span>
+                                            }
+                                        </td>
+                                        <td class="px-4 py-3 text-center">
+                                            <div class="btn-group" role="group" aria-label="Acciones">
+                                                <a class="btn btn-outline-primary btn-sm" asp-action="Edit" asp-route-id="@item.IdRaza" title="Editar">
+                                                    <i class="bi bi-pencil-fill"></i>
+                                                </a>
+                                                <a class="btn btn-outline-info btn-sm" asp-action="Details" asp-route-id="@item.IdRaza" title="Ver detalles">
+                                                    <i class="bi bi-eye-fill"></i>
+                                                </a>
+                                                <a class="btn btn-outline-danger btn-sm" asp-action="Delete" asp-route-id="@item.IdRaza" title="Eliminar">
+                                                    <i class="bi bi-trash-fill"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-5">
+                        <div class="mb-3">
+                            <i class="bi bi-inbox display-1 text-muted"></i>
+                        </div>
+                        <h5 class="text-muted">No hay razas registradas</h5>
+                        <p class="text-muted">Comienza agregando una nueva raza para gestionar tu inventario.</p>
+                        <a class="btn btn-primary btn-lg" asp-action="Create">
+                            <i class="bi bi-plus-circle me-1"></i>
+                            Agregar Primera Raza
+                        </a>
+                    </div>
+                }
             </div>
         </div>
     </div>
-</div> 
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Función de búsqueda
+            $('#searchInput').on('keyup', function() {
+                filterTable();
+            });
+
+            // Función de filtro por especie
+            $('#especieFilter').on('change', function() {
+                filterTable();
+            });
+
+            // Limpiar filtros
+            $('#clearFilters').on('click', function() {
+                $('#searchInput').val('');
+                $('#especieFilter').val('');
+                filterTable();
+            });
+
+            function filterTable() {
+                var searchText = $('#searchInput').val().toLowerCase();
+                var selectedEspecie = $('#especieFilter').val().toLowerCase();
+
+                $('tbody tr').each(function() {
+                    var row = $(this);
+                    var nombre = row.find('td:first').text().toLowerCase();
+                    var especie = row.find('td:nth-child(2)').text().toLowerCase();
+
+                    var matchesSearch = nombre.includes(searchText);
+                    var matchesEspecie = selectedEspecie === '' || especie.includes(selectedEspecie);
+
+                    if (matchesSearch && matchesEspecie) {
+                        row.show();
+                    } else {
+                        row.hide();
+                    }
+                });
+
+                // Mostrar mensaje si no hay resultados
+                var visibleRows = $('tbody tr:visible').length;
+                if (visibleRows === 0) {
+                    if ($('#noResultsMessage').length === 0) {
+                        $('tbody').append('<tr id="noResultsMessage"><td colspan="4" class="text-center py-4 text-muted"><i class="bi bi-search me-2"></i>No se encontraron resultados</td></tr>');
+                    }
+                } else {
+                    $('#noResultsMessage').remove();
+                }
+            }
+
+            // Animación de entrada para las filas
+            $('tbody tr').each(function(index) {
+                $(this).css('animation-delay', (index * 0.1) + 's');
+                $(this).addClass('fade-in');
+            });
+        });
+    </script>
+}

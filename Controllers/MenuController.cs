@@ -359,5 +359,43 @@ namespace Turnos31.Controllers
                 });
             }
         }
+
+        // Página de diagnóstico - REMOVER EN PRODUCCIÓN
+        public IActionResult Debug()
+        {
+            return View();
+        }
+
+        // Método temporal para depuración - REMOVER EN PRODUCCIÓN
+        public async Task<IActionResult> DebugMenus()
+        {
+            var usuarioRol = HttpContext.Session.GetString("UsuarioRol");
+            var usuarioId = HttpContext.Session.GetString("UsuarioId");
+
+            var result = new
+            {
+                UsuarioId = usuarioId,
+                UsuarioRol = usuarioRol,
+                Roles = await _context.Roles.Select(r => new { r.IdRol, r.NombreRol }).ToListAsync(),
+                TodosLosMenus = await _context.Menus.Select(m => new { m.Id, m.Nombre, m.Url, m.MenuPadreId }).ToListAsync(),
+                MenuRoles = await _context.MenuRoles
+                    .Include(mr => mr.Menu)
+                    .Include(mr => mr.Rol)
+                    .Select(mr => new {
+                        mr.Id,
+                        MenuId = mr.MenuId,
+                        MenuNombre = mr.Menu.Nombre,
+                        RolId = mr.RolId,
+                        RolNombre = mr.Rol.NombreRol
+                    })
+                    .ToListAsync(),
+                EspeciesYRazas = await _context.Menus
+                    .Where(m => m.Nombre == "Especies" || m.Nombre == "Razas")
+                    .Select(m => new { m.Id, m.Nombre, m.Url, m.MenuPadreId })
+                    .ToListAsync()
+            };
+
+            return Json(result);
+        }
     }
-} 
+}

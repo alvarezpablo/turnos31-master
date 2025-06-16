@@ -1,113 +1,190 @@
-@model Turnos31.Models.Mascota
+@model Turnos31.ViewModels.MascotaCreateViewModel
 
 @{
     ViewData["Title"] = "Editar Mascota";
 }
 
-<div class="row">
-    <div class="col s12">
-        <div class="card">
-            <div class="card-content">
-                <span class="card-title">Editar Mascota</span>
-                <form asp-action="Edit">
-                    <div class="row">
-                        <div asp-validation-summary="ModelOnly" class="red-text"></div>
-                        <input type="hidden" asp-for="IdMascota" />
-
-                        <div class="input-field col s12 m6">
-                            <i class="material-icons prefix">pets</i>
-                            <input asp-for="Nombre" class="validate" />
-                            <label asp-for="Nombre">Nombre</label>
-                            <span asp-validation-for="Nombre" class="red-text"></span>
-                        </div>
-
-                        <div class="input-field col s12 m6">
-                            <i class="material-icons prefix">calendar_today</i>
-                            <input asp-for="FechaNacimiento" type="date" class="validate" />
-                            <label asp-for="FechaNacimiento">Fecha de Nacimiento</label>
-                            <span asp-validation-for="FechaNacimiento" class="red-text"></span>
-                        </div>
-
-                        <div class="input-field col s12 m6">
-                            <i class="material-icons prefix">category</i>
-                            <select asp-for="IdEspecie" asp-items="ViewBag.IdEspecie" class="validate">
-                                <option value="" disabled>Seleccione una especie</option>
-                            </select>
-                            <label>Especie</label>
-                            <span asp-validation-for="IdEspecie" class="red-text"></span>
-                        </div>
-
-                        <div class="input-field col s12 m6">
-                            <i class="material-icons prefix">pets</i>
-                            <select asp-for="IdRaza" asp-items="ViewBag.IdRaza" class="validate">
-                                <option value="" disabled>Seleccione una raza</option>
-                            </select>
-                            <label>Raza</label>
-                            <span asp-validation-for="IdRaza" class="red-text"></span>
-                        </div>
-
-                        <div class="input-field col s12 m6">
-                            <i class="material-icons prefix">person</i>
-                            <select asp-for="IdDueno" asp-items="ViewBag.IdDueno" class="validate">
-                                <option value="" disabled>Seleccione un dueño</option>
-                            </select>
-                            <label>Dueño</label>
-                            <span asp-validation-for="IdDueno" class="red-text"></span>
-                        </div>
-
-                        <div class="input-field col s12 m6">
-                            <i class="material-icons prefix">wc</i>
-                            <select asp-for="Sexo" class="validate">
-                                <option value="" disabled>Seleccione el sexo</option>
-                                <option value="M">Macho</option>
-                                <option value="H">Hembra</option>
-                            </select>
-                            <label>Sexo</label>
-                            <span asp-validation-for="Sexo" class="red-text"></span>
-                        </div>
-
-                        <div class="input-field col s12 m6">
-                            <i class="material-icons prefix">palette</i>
-                            <input asp-for="Color" class="validate" />
-                            <label asp-for="Color">Color</label>
-                            <span asp-validation-for="Color" class="red-text"></span>
-                        </div>
-
-                        <div class="input-field col s12 m6">
-                            <i class="material-icons prefix">texture</i>
-                            <input asp-for="Pelaje" class="validate" />
-                            <label asp-for="Pelaje">Pelaje</label>
-                            <span asp-validation-for="Pelaje" class="red-text"></span>
-                        </div>
-
-                        <div class="input-field col s12">
-                            <i class="material-icons prefix">warning</i>
-                            <textarea asp-for="Alergia" class="materialize-textarea"></textarea>
-                            <label asp-for="Alergia">Alergias</label>
-                            <span asp-validation-for="Alergia" class="red-text"></span>
-                        </div>
-
-                        <div class="input-field col s12">
-                            <i class="material-icons prefix">note</i>
-                            <textarea asp-for="Observaciones" class="materialize-textarea"></textarea>
-                            <label asp-for="Observaciones">Observaciones</label>
-                            <span asp-validation-for="Observaciones" class="red-text"></span>
-                        </div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-warning text-white">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-pencil-square fs-4 me-2"></i>
+                        <h5 class="card-title mb-0">Editar Mascota</h5>
                     </div>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <div class="alert alert-danger">
+                            <i class="bi bi-exclamation-triangle me-2"></i>@ViewBag.ErrorMessage
+                        </div>
+                    }
 
-                    <div class="row">
-                        <div class="col s12">
-                            <button class="btn waves-effect waves-light green lighten-1" type="submit">
-                                <i class="material-icons left">save</i>
-                                Guardar
-                            </button>
-                            <a class="waves-effect waves-light btn grey" asp-action="Index">
-                                <i class="material-icons left">arrow_back</i>
-                                Volver
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                        <input type="hidden" asp-for="Mascota.IdMascota" />
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Mascota.Nombre" class="control-label">
+                                        <i class="bi bi-paw me-1"></i>Nombre
+                                    </label>
+                                    <input asp-for="Mascota.Nombre" class="form-control" />
+                                    <span asp-validation-for="Mascota.Nombre" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Mascota.IdDueno" class="control-label">
+                                        <i class="bi bi-person me-1"></i>Dueño
+                                    </label>
+                                    <select asp-for="Mascota.IdDueno" class="form-select" asp-items="Model.Duenos">
+                                        <option value="">Seleccione un dueño</option>
+                                    </select>
+                                    <span asp-validation-for="Mascota.IdDueno" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Mascota.IdEspecie" class="control-label">
+                                        <i class="bi bi-tag me-1"></i>Especie
+                                    </label>
+                                    <select asp-for="Mascota.IdEspecie" class="form-select" asp-items="Model.Especies" id="especieSelect">
+                                        <option value="">Seleccione una especie</option>
+                                    </select>
+                                    <span asp-validation-for="Mascota.IdEspecie" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Mascota.IdRaza" class="control-label">
+                                        <i class="bi bi-tag-fill me-1"></i>Raza
+                                    </label>
+                                    <select asp-for="Mascota.IdRaza" class="form-select" asp-items="Model.Razas" id="razaSelect">
+                                        <option value="">Seleccione una raza</option>
+                                    </select>
+                                    <span asp-validation-for="Mascota.IdRaza" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Mascota.Sexo" class="control-label">
+                                        <i class="bi bi-gender-ambiguous me-1"></i>Sexo
+                                    </label>
+                                    <select asp-for="Mascota.Sexo" class="form-select">
+                                        <option value="">Seleccione el sexo</option>
+                                        <option value="M">Macho</option>
+                                        <option value="H">Hembra</option>
+                                    </select>
+                                    <span asp-validation-for="Mascota.Sexo" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Mascota.Color" class="control-label">
+                                        <i class="bi bi-palette me-1"></i>Color
+                                    </label>
+                                    <input asp-for="Mascota.Color" class="form-control" placeholder="Ej: Marrón, Negro, Blanco" />
+                                    <span asp-validation-for="Mascota.Color" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Mascota.FechaNacimiento" class="control-label">
+                                        <i class="bi bi-calendar me-1"></i>Fecha de Nacimiento
+                                    </label>
+                                    <input asp-for="Mascota.FechaNacimiento" class="form-control" type="date" />
+                                    <span asp-validation-for="Mascota.FechaNacimiento" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Mascota.Peso" class="control-label">
+                                        <i class="bi bi-speedometer me-1"></i>Peso (kg)
+                                    </label>
+                                    <input asp-for="Mascota.Peso" class="form-control" type="number" step="0.01" min="0" placeholder="Ej: 5.5" />
+                                    <span asp-validation-for="Mascota.Peso" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Mascota.Tamaño" class="control-label">
+                                        <i class="bi bi-arrows-expand me-1"></i>Tamaño
+                                    </label>
+                                    <select asp-for="Mascota.Tamaño" class="form-select">
+                                        <option value="">Seleccione el tamaño</option>
+                                        <option value="Pequeño">Pequeño</option>
+                                        <option value="Mediano">Mediano</option>
+                                        <option value="Grande">Grande</option>
+                                    </select>
+                                    <span asp-validation-for="Mascota.Tamaño" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Mascota.NumeroMicrochip" class="control-label">
+                                        <i class="bi bi-cpu me-1"></i>Número de Microchip
+                                    </label>
+                                    <input asp-for="Mascota.NumeroMicrochip" class="form-control" placeholder="Opcional" />
+                                    <span asp-validation-for="Mascota.NumeroMicrochip" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Mascota.Pelaje" class="control-label">
+                                        <i class="bi bi-brush me-1"></i>Tipo de Pelaje
+                                    </label>
+                                    <input asp-for="Mascota.Pelaje" class="form-control" placeholder="Ej: Corto, Largo, Rizado" />
+                                    <span asp-validation-for="Mascota.Pelaje" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Mascota.Alergia" class="control-label">
+                                        <i class="bi bi-exclamation-triangle me-1"></i>Alergias
+                                    </label>
+                                    <input asp-for="Mascota.Alergia" class="form-control" placeholder="Opcional" />
+                                    <span asp-validation-for="Mascota.Alergia" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Mascota.Observaciones" class="control-label">
+                                <i class="bi bi-info-circle me-1"></i>Observaciones
+                            </label>
+                            <textarea asp-for="Mascota.Observaciones" class="form-control" rows="3" placeholder="Información adicional sobre la mascota"></textarea>
+                            <span asp-validation-for="Mascota.Observaciones" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left me-2"></i>Volver
                             </a>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="bi bi-save me-2"></i>Actualizar
+                            </button>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -115,10 +192,35 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
     <script>
-        $(document).ready(function(){
-            $('select').formSelect();
-            $('.materialize-textarea').characterCounter();
+        $(document).ready(function() {
+            // Cuando cambie la especie, cargar las razas correspondientes
+            $('#especieSelect').change(function() {
+                var especieId = $(this).val();
+                var razaSelect = $('#razaSelect');
+
+                // Limpiar el select de razas
+                razaSelect.empty();
+                razaSelect.append('<option value="">Seleccione una raza</option>');
+
+                if (especieId) {
+                    // Hacer petición AJAX para obtener las razas
+                    $.ajax({
+                        url: '@Url.Action("GetRazasByEspecie", "Mascota")',
+                        type: 'GET',
+                        data: { idEspecie: especieId },
+                        success: function(data) {
+                            $.each(data, function(index, item) {
+                                razaSelect.append('<option value="' + item.value + '">' + item.text + '</option>');
+                            });
+                        },
+                        error: function() {
+                            console.log('Error al cargar las razas');
+                        }
+                    });
+                }
+            });
         });
     </script>
-} 
+}
